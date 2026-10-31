@@ -1,0 +1,23 @@
+#lf
+% home.elpi with the missing person added.
+person : type.
+anna  : person.
+marco : person.
+lena  : person.
+taras : person.
+sofia : person.
+city : type.
+kyiv   : city.
+lisbon : city.
+porto  : city.
+berlin : city.
+lives : person -> city -> type.
+#mode lives +P -C.
+l_anna  : lives anna  lisbon.
+l_marco : lives marco lisbon.
+l_lena  : lives lena  berlin.
+l_taras : lives taras kyiv.
+% ANCHOR: fix
+l_sofia : lives sofia porto.
+% ANCHOR_END: fix
+#total P (lives P _).

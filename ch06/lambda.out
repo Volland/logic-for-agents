@@ -1,0 +1,5 @@
+F = c0 \ in_country c0 portugal
+G = in_country lisbon portugal
+lisbon: yes
+berlin: no
+filter: [lisbon, porto]

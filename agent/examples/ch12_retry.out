@@ -1,0 +1,35 @@
+try 1:
+  | works_at acme sofia.
+  > Rejected by the type check:
+  > <assert>:1:9: acme has type org but is used with type person
+  > <assert>:1:14: sofia has type person but is used with type
+  >   org
+  > Answer again with corrected λProlog only.
+try 2:
+  | works_at sofia acme.
+committed
+
+try 1:
+  | knows X Y :- met X Y.
+  | knows X Y :- colleague X Y.
+  | knows X Y :- knows Y X.
+  > Rejected by the sandbox check:
+  > out of fuel: the budget of 20000 steps ran out
+  > while running `knows X1 X2`
+  > Answer again with corrected λProlog only.
+try 2:
+  | % met and colleague already go both ways,
+  | % so knows needs no rule of its own for that.
+  | knows X Y :- met X Y.
+  | knows X Y :- colleague X Y.
+committed
+
+works_at sofia acme.
+% met and colleague already go both ways,
+% so knows needs no rule of its own for that.
+knows X Y :- met X Y.
+knows X Y :- colleague X Y.
+knows sofia Who
+   {'Who': 'anna'}
+   {'Who': 'marco'}
+knows sofia anna  [learned rule]

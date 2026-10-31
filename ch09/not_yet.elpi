@@ -1,0 +1,27 @@
+% Chapter 9: a question asked too early.
+accumulate world.
+accumulate time.
+
+% ANCHOR: after_review
+% The review ends at 11:00.
+pred after_review i:time.
+after_review T :-
+  event 2 _ _ _ _ End,
+  before End T.
+% ANCHOR_END: after_review
+
+% ANCHOR: check
+pred check i:time.
+check T :- after_review T, !,
+  print T "is after the review".
+check T :-
+  print T
+    "is not after the review".
+% ANCHOR_END: check
+
+% ANCHOR: main
+main :-
+  check (d 2000 12),
+  check (d 2000 9),
+  check T.
+% ANCHOR_END: main

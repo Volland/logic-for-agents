@@ -1,0 +1,34 @@
+% Chapter 4: input arguments are matched, output arguments
+% are unified.
+accumulate world.
+accumulate time.
+
+% ANCHOR: known
+pred known i:person.
+known anna.
+known marco.
+
+pred known_o o:person.
+known_o anna.
+known_o marco.
+% ANCHOR_END: known
+
+% ANCHOR: sneaky
+% The head only matches; the body may still bind X.
+pred sneaky i:person.
+sneaky X :- X = anna.
+% ANCHOR_END: sneaky
+
+% ANCHOR: main
+pred yes_no i:prop, i:string.
+yes_no G Label :- (G, print Label "yes" ; print Label "no").
+
+main :-
+  yes_no (known anna)      "known anna:",
+  yes_no (known P)         "known P:",
+  yes_no (known_o Q)       "known_o Q:",
+  print  "  and Q is" Q,
+  yes_no (minutes T 600)   "minutes T 600:",
+  yes_no (sneaky S)        "sneaky S:",
+  print  "  and S is" S.
+% ANCHOR_END: main

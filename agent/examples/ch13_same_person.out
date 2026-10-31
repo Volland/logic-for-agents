@@ -1,0 +1,24 @@
+met_by_name "Anya" "Marko" -> True
+met_by_name "Lenka" "Marko" -> False
+met_by_name "Bob" "Marko" -> False
+met_by_name "Lisa" "Marko" ->
+  ElpiError: host predicate 'same_person': TypeError: output 1
+    of same_person has type person, got lisbon of type city
+met_by_name "Olena" "Marko" ->
+  ElpiError: host predicate 'same_person': unknown constant
+    'olena'
+  the LLM said Anya is anna
+  the LLM said Marko is marco
+  the LLM said Lenka is lena
+  the LLM said Bob is nobody
+  the LLM said Lisa is lisbon
+  the LLM said Olena is olena
+met_by_name "Anya" "Marko"  [by_name]
+  same_person "Anya" anna  [llm]
+  same_person "Marko" marco  [llm]
+  met anna marco  [met_at]
+    event 1 meeting [anna, marco] lisbon (d 2000 10) (d 2000 11)  [memory]
+    physical meeting  [memory]
+    std.mem [anna, marco] anna  [check]
+    std.mem [anna, marco] marco  [check]
+    differ anna marco  [check]

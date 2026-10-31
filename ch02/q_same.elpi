@@ -1,0 +1,8 @@
+% Chapter 2: three goals that share variables.
+accumulate world.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (works_at Y O, reports_to Y M, works_at M O).
+% ANCHOR_END: q

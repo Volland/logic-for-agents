@@ -1,0 +1,32 @@
+# ANCHOR: json
+{
+  "do": "remember",
+  "facts": [
+    {
+      "pred": "works_at",
+      "person": "sofia",
+      "org": "acme"
+    }
+  ]
+}
+# ANCHOR_END: json
+# ANCHOR: what_if_json
+{
+  "do": "what_if",
+  "assume": [
+    {
+      "pred": "reports_to",
+      "person": "lena",
+      "manager": "anna"
+    }
+  ],
+  "query": "chain taras M"
+}
+# ANCHOR_END: what_if_json
+# ANCHOR: after
+works_at sofia acme: True
+reports_to lena anna: False
+attends 3 lena: False
+attends 30 sofia: False
+calls to the LLM: 10
+# ANCHOR_END: after

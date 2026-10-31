@@ -1,0 +1,8 @@
+% Chapter 3: colleague, fixed with not.
+accumulate naf.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (colleague anna Q).
+% ANCHOR_END: q

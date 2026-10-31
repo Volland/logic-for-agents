@@ -1,0 +1,34 @@
+% Chapter 6: a stored claim with a hole, filled later.
+accumulate holds.
+
+% ANCHOR: template
+% Open claims: one person missing.
+pred template o:string,
+              o:(person -> claim).
+template "briefed"
+  (p\ and (att 1 p) (got 1 p)).
+template "boss_there"
+  (p\ ex m\ and (rep p m)
+                (att 1 m)).
+% ANCHOR_END: template
+
+main :-
+% ANCHOR: lena
+  template "briefed" T,
+  print "T lena =" (T lena),
+  yes_no (holds (T lena)) "lena:",
+  yes_no (holds (T marco)) "marco:",
+% ANCHOR_END: lena
+% ANCHOR: filter
+  people Ps,
+  std.filter Ps (p\ holds (T p))
+             Bs,
+  print "briefed:" Bs,
+% ANCHOR_END: filter
+% ANCHOR: boss
+  template "boss_there" U,
+  print "U marco =" (U marco),
+  std.filter Ps (p\ holds (U p))
+             Us,
+  print "boss_there:" Us.
+% ANCHOR_END: boss

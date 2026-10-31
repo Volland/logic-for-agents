@@ -1,0 +1,19 @@
+% Time helpers shared by every chapter: `accumulate time.`
+% Needs `world` for the `time` type.
+
+% ANCHOR: minutes
+pred minutes i:time, o:int.
+minutes (d D H) M :- M is D * 1440 + H * 60.
+% ANCHOR_END: minutes
+
+% ANCHOR: before
+pred before i:time, i:time.
+before T1 T2 :- minutes T1 M1, minutes T2 M2, M1 < M2.
+% ANCHOR_END: before
+
+% ANCHOR: overlaps
+% Two spans [A1, A2) and [B1, B2) overlap when each
+% starts before the other ends.
+pred overlaps i:time, i:time, i:time, i:time.
+overlaps A1 A2 B1 B2 :- before A1 B2, before B1 A2.
+% ANCHOR_END: overlaps

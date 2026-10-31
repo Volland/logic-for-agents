@@ -1,0 +1,18 @@
+g X = g (g Y)              yes: g (g X0)
+f X (g X) = f a Y          yes: f a (g a)
+f X a = f b X              no
+f (g X) Y = f Y (g a)      yes: f (g a) (g a)
+
+event_count anna 2
+
+event_count sofia 0
+
+idle lena
+idle sofia
+
+first answer: anna
+
+round 1 adds 7 facts
+round 2 adds 2 facts
+round 3 adds nothing: done
+9 knows facts at the fixpoint

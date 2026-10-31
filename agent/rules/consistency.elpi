@@ -1,0 +1,67 @@
+% Part III: the rules a memory must never break.
+% `violation Name Detail` names the broken rule and says
+% why; `check` asks it under `=>`, before a commit.
+accumulate derived.
+
+% ANCHOR: names
+kind check type.
+type bilocation, born_before   check.
+type duplicate_id, second_manager check.
+% ANCHOR_END: names
+
+% ANCHOR: str
+pred str i:A, o:string.
+str X S :- term_to_string X S.
+% ANCHOR_END: str
+
+pred violation o:check, o:string.
+
+% ANCHOR: bilocation
+% One person at two physical events, in two cities,
+% at the same time.
+violation bilocation D :-
+  attends E1 P, attends E2 P, E1 < E2,
+  event E1 K1 _ C1 S1 T1, physical K1,
+  event E2 K2 _ C2 S2 T2, physical K2,
+  not (C1 = C2), overlaps S1 T1 S2 T2,
+  str P SP, str E1 SE1, str C1 SC1,
+  str E2 SE2, str C2 SC2,
+  D is SP ^ ": event " ^ SE1 ^ " in " ^ SC1
+    ^ " overlaps event " ^ SE2 ^ " in " ^ SC2.
+% ANCHOR_END: bilocation
+
+% ANCHOR: born_before
+% An event that starts before one of its people
+% was born.
+violation born_before D :-
+  attends E P, event E _ _ _ S _,
+  born P B, before S B,
+  str P SP, str E SE, str S SS, str B SB,
+  D is SP ^ ": event " ^ SE ^ " starts at " ^ SS
+    ^ ", birth is at " ^ SB.
+% ANCHOR_END: born_before
+
+% ANCHOR: duplicate_id
+% Two different events with one id. Comparing the
+% printed events reports each pair once.
+violation duplicate_id D :-
+  event I K1 W1 C1 S1 T1, event I K2 W2 C2 S2 T2,
+  str (event I K1 W1 C1 S1 T1) A,
+  str (event I K2 W2 C2 S2 T2) B, A < B,
+  str I SI,
+  D is "two different events have id " ^ SI.
+% ANCHOR_END: duplicate_id
+
+% ANCHOR: second_manager
+violation second_manager D :-
+  reports_to P M1, reports_to P M2,
+  str M1 S1, str M2 S2, S1 < S2, str P SP,
+  D is SP ^ " reports to " ^ S1 ^ " and to " ^ S2.
+% ANCHOR_END: second_manager
+
+% ANCHOR: check
+% Would the clauses in New break a rule? Assume them
+% with `=>` and ask; nothing is committed.
+pred check i:list prop, o:check, o:string.
+check New Name Detail :- New => violation Name Detail.
+% ANCHOR_END: check

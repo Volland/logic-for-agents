@@ -1,0 +1,14 @@
+% Chapter 6: beta-reduction, done by the engine.
+accumulate world.
+
+% ANCHOR: main
+main :-
+  A = (x\ x) anna,
+  B = (x\ marco) anna,
+  C = (x\ y\ x) anna marco,
+  D = (x\ y\ y) anna marco,
+  E = (x\ y\ x) anna,
+  print "A =" A, print "B =" B,
+  print "C =" C, print "D =" D,
+  print "E =" E.
+% ANCHOR_END: main

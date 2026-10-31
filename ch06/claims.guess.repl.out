@@ -1,0 +1,4 @@
+?- Success:
+  T = X0
+ X0 lena = and (att 1 lena) (got 1 lena)  /* suspended on X0 */
+More? (y/N) ?- 

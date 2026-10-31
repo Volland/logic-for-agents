@@ -1,0 +1,8 @@
+% Chapter 3: is Anna staff?
+accumulate cut.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (rank_cut anna staff).
+% ANCHOR_END: q

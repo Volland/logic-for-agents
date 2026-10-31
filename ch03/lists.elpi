@@ -1,0 +1,34 @@
+% Chapter 3: lists and arithmetic.
+accumulate world.
+accumulate time.
+
+% ANCHOR: app
+pred app o:list A, o:list A,
+         o:list A.
+app [] L L.
+app [X|Xs] L [X|R] :-
+  app Xs L R.
+% ANCHOR_END: app
+
+% ANCHOR: len
+pred len i:list A, o:int.
+len [] 0.
+len [_|T] N :-
+  len T M, N is M + 1.
+% ANCHOR_END: len
+
+% ANCHOR: headcount
+pred headcount o:int, o:int.
+headcount E N :-
+  event E _ Who _ _ _,
+  len Who N.
+% ANCHOR_END: headcount
+
+% ANCHOR: duration
+pred duration o:int, o:int.
+duration E Min :-
+  event E _ _ _ From To,
+  minutes From M1,
+  minutes To M2,
+  Min is M2 - M1.
+% ANCHOR_END: duration

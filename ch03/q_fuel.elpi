@@ -1,0 +1,6 @@
+% expect: fail
+% fuel: 10000
+% Chapter 3: the left-recursive rule with a small fuel budget.
+accumulate loop.
+
+main :- chain_left anna Who, print Who.

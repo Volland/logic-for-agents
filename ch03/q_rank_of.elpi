@@ -1,0 +1,9 @@
+% Chapter 3: two ranks for Anna.
+accumulate cut.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (rank_of anna R),
+  show (rank_of marco R1).
+% ANCHOR_END: q

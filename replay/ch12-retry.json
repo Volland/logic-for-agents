@@ -1,0 +1,31 @@
+{
+  "note": "Authored fixture, not a live recording: hand-written responses in the shape claude-sonnet-5-5 returns for agent/formalize.py's prompts, with the mistakes on purpose. Each 'user' field is the exact message the agent sends, guard feedback included.",
+  "model": "claude-sonnet-5-5",
+  "steps": [
+    {
+      "step": "Sofia, try 1",
+      "user": "Write λProlog clauses for: Sofia works at Acme.",
+      "response": "works_at acme sofia."
+    },
+    {
+      "step": "Sofia, try 2",
+      "user": "Rejected by the type check:\n<assert>:1:9: acme has type org but is used with type person\n<assert>:1:14: sofia has type person but is used with type org\nAnswer again with corrected λProlog only.",
+      "response": "works_at sofia acme."
+    },
+    {
+      "step": "knows, try 1",
+      "user": "Write λProlog clauses for: People know each other if they met or are colleagues, and knowing goes both ways.",
+      "response": "```elpi\nknows X Y :- met X Y.\nknows X Y :- colleague X Y.\nknows X Y :- knows Y X.\n```"
+    },
+    {
+      "step": "knows, try 2",
+      "user": "Rejected by the sandbox check:\nout of fuel: the budget of 20000 steps ran out\nwhile running `knows X1 X2`\nAnswer again with corrected λProlog only.",
+      "response": "% met and colleague already go both ways,\n% so knows needs no rule of its own for that.\nknows X Y :- met X Y.\nknows X Y :- colleague X Y."
+    },
+    {
+      "step": "query",
+      "user": "Write one λProlog query for: Whom does Sofia know?",
+      "response": "knows sofia Who"
+    }
+  ]
+}

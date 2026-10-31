@@ -1,0 +1,5 @@
+| knows X Y :- met X Y.
+| knows X Y :- knows Y X.
+  rejected by the sandbox check:
+  out of fuel: the budget of 20000 steps ran out
+  while running `knows X1 X2`

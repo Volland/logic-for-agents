@@ -1,0 +1,8 @@
+% Chapter 3: right recursion says no.
+accumulate loop.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (chain_of_command anna Boss).
+% ANCHOR_END: q

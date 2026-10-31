@@ -1,0 +1,20 @@
+calls from the loop: 8
+calls from a rule: 2
+names a rule asked about: Anya, Marko
+met_by_name "Anya" "Marko": 2 guesses
+  same_person "Anya" anna
+  same_person "Marko" marco
+colleague anna marco: 0 guesses
+false  refused     bilocation     the phantom
+false  refused     travel         Berlin, after the kickoff
+false  remembered  -              a call nobody had
+false  refused     born_before    the sofia trap
+false  refused     second_manager a second boss for Marco
+false  refused     parse          arguments swapped
+true   refused     second_manager Taras now reports to Anna
+true   remembered  -              Sofia joins Acme
+true   refused     travel         Anna's talk in Porto
+true   refused     parse          Olena reports to Lena
+false proposals: 6, remembered 1, refused 5
+true proposals: 4, remembered 1, refused 3
+travel: anna: no time to travel from lisbon to porto

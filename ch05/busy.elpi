@@ -1,0 +1,29 @@
+% Chapter 5: std.forall and std.exists check the phantom.
+accumulate more_world.
+
+% ANCHOR: busy
+% busy From To P: P is in a room somewhere during the span.
+pred busy i:time, i:time, i:person.
+busy From To P :-
+  event _ K Who _ S E, physical K, std.mem Who P,
+  overlaps From To S E.
+
+pred free i:time, i:time, i:person.
+free From To P :- not (busy From To P).
+% ANCHOR_END: busy
+
+% ANCHOR: main
+pred yes_no i:prop, i:string.
+yes_no G Label :- (G, print Label "yes" ; print Label "no").
+
+main :-
+  Phantom = [anna, lena],
+  yes_no (std.forall Phantom (free (d 2000 10) (d 2000 12)))
+         "all free?",
+  yes_no (std.exists Phantom (busy (d 2000 10) (d 2000 12)))
+         "anyone busy?",
+  std.filter Phantom (busy (d 2000 10) (d 2000 12)) B,
+  print "busy:" B,
+  yes_no (std.forall [] (busy (d 2000 10) (d 2000 12)))
+         "all of nobody busy?".
+% ANCHOR_END: main

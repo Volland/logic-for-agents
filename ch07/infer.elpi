@@ -1,0 +1,15 @@
+% Chapter 7: the checker finds out what x ranges over.
+accumulate loose.
+
+% ANCHOR: main
+main :-
+  (pi x\ sort_of x S1 =>
+     wf (att (evt 1) x)),
+  print "S1 =" S1,
+  (pi x\ sort_of x S2 =>
+     wf (att x (per anna))),
+  print "S2 =" S2,
+  (pi x\ sort_of x S3 =>
+     wf (att (evt 1) (per anna))),
+  print "S3 =" S3.
+% ANCHOR_END: main

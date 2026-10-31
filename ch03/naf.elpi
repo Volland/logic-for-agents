@@ -1,0 +1,33 @@
+% Chapter 3: negation as failure.
+accumulate world.
+
+pred attended o:person, o:int.
+attended P E :-
+  event E _ Who _ _ _,
+  std.mem Who P.
+
+pred same_org o:person, o:person.
+same_org P Q :-
+  works_at P O, works_at Q O.
+
+% ANCHOR: colleague
+pred colleague o:person, o:person.
+colleague P Q :-
+  same_org P Q, not (P = Q).
+colleague P Q :- reports_to P Q.
+colleague P Q :- reports_to Q P.
+% ANCHOR_END: colleague
+
+% ANCHOR: absent
+pred absent o:person, o:int.
+absent P E :-
+  works_at P acme,
+  not (attended P E).
+% ANCHOR_END: absent
+
+% ANCHOR: absent_bad
+pred absent_bad o:person, o:int.
+absent_bad P E :-
+  not (attended P E),
+  works_at P acme.
+% ANCHOR_END: absent_bad

@@ -1,0 +1,28 @@
+% Chapter 7: checking queries that arrive without types.
+accumulate loose.
+
+% ANCHOR: queries
+pred query o:string, o:query.
+query "q1" (all x\ att (evt 1) x).
+query "q2" (all x\ att x (evt 1)).
+query "q3" (ex x\ ex m\
+             and (att (evt 2) x)
+                 (rep x m)).
+query "q4" (ex x\
+             and (att (evt 1) x)
+                 (att x (evt 2))).
+% ANCHOR_END: queries
+
+% ANCHOR: main
+pred verdict i:string.
+verdict Q :-
+  query Q F, wf F,
+  print Q "well formed".
+verdict Q :-
+  query Q F, not (wf F),
+  print Q "rejected".
+
+main :-
+  std.forall ["q1", "q2",
+              "q3", "q4"] verdict.
+% ANCHOR_END: main

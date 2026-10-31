@@ -1,0 +1,3 @@
+all (x\ all (y\ R y x)) =
+  all (p\ all (q\ rep p q)).
+

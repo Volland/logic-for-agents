@@ -1,0 +1,134 @@
+% Solutions to the Chapter 3 exercises.
+% Self-contained: only world.elpi is loaded.
+accumulate world.
+
+% The `show` helper from code/ch03/show.elpi.
+pred show i:prop.
+show Q :- std.findall Q As, answers As, print "".
+pred answers i:list prop.
+answers [] :- print "no".
+answers [A|As] :- each [A|As].
+pred each i:list prop.
+each [].
+each [A|As] :- print A, each As.
+
+% From Chapter 2.
+pred attended o:person, o:int.
+attended P E :- event E _ Who _ _ _, std.mem Who P.
+pred met o:person, o:person.
+met P Q :- attended P E, attended Q E.
+
+% ANCHOR: ex1
+% Exercise 3.1: unification by hand, checked.
+kind thing type.
+type a, b thing.
+type f    thing -> thing -> thing.
+type g    thing -> thing.
+
+pred try i:string, i:A, i:A.
+try Eq L R :- L = R, print Eq "   yes:" L.
+try Eq L R :- not (L = R), print Eq "   no".
+
+pred eq o:int.
+eq 1 :- try "g X = g (g Y)          " (g X) (g (g Y)).
+eq 2 :- try "f X (g X) = f a Y      " (f X (g X)) (f a Y).
+eq 3 :- try "f X a = f b X          " (f X a) (f b X).
+eq 4 :- try "f (g X) Y = f Y (g a)  " (f (g X) Y) (f Y (g a)).
+
+pred ex1.
+ex1 :- eq 1, eq 2, eq 3, eq 4, print "".
+% In 1, Y stays a variable, so lean-elpi prints a name it
+% made up for it.
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 3.2: how many events did P attend?
+pred event_count o:person, o:int.
+event_count P N :-
+  std.findall (attended P _) Es,
+  std.length Es N.
+
+pred ex2.
+ex2 :-
+  show (event_count anna N),
+  show (event_count sofia N1).
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 3.3: nobody's calendar. `born P _` comes first: it
+% names a person, so `not` gets a question with no holes.
+pred idle o:person.
+idle P :- born P _, not (attended P _).
+
+pred ex3.
+ex3 :- show (idle P).
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 3.4: the chain of met, top-down.
+pred knows o:person, o:person.
+knows P Q :- met P Q.
+knows P Q :- met P R, knows R Q.
+
+pred ex4.
+ex4 :- knows taras Q, print "first answer:" Q, print "".
+% `met taras taras` holds, so the second clause can call
+% `knows taras Q` again with nothing consumed: an endless
+% branch. findall walks every branch, so it never returns.
+% ANCHOR_END: ex4
+
+% ANCHOR: ex5
+% Exercise 3.5: the chain of met, bottom-up.
+kind k type.
+type metf  person -> person -> k.
+type knows person -> person -> k.
+
+pred rule i:list k, o:k.
+rule DB (knows X Y) :- std.mem DB (metf X Y).
+rule DB (knows X Z) :-
+  std.mem DB (knows X Y), std.mem DB (metf Y Z).
+
+pred fresh i:list k, o:k.
+fresh DB F :- rule DB F, not (std.mem DB F).
+
+pred heads i:list prop, i:list k, o:list k.
+heads [] Acc Acc.
+heads [fresh _ F | Ps] Acc New :-
+  std.mem Acc F, heads Ps Acc New.
+heads [fresh _ F | Ps] Acc New :-
+  not (std.mem Acc F), heads Ps [F | Acc] New.
+
+pred fixpoint i:int, i:list k, o:list k.
+fixpoint N DB Out :-
+  std.findall (fresh DB _) Ps, heads Ps [] New,
+  next N DB New Out.
+
+pred next i:int, i:list k, i:list k, o:list k.
+next N DB [] DB :- print "round" N "adds nothing: done".
+next N DB [F|Fs] Out :-
+  std.length [F|Fs] L, print "round" N "adds" L "facts",
+  std.append DB [F|Fs] DB1, N1 is N + 1,
+  fixpoint N1 DB1 Out.
+
+% The met facts as data, without repeats.
+pred edb o:list k.
+edb DB :- std.findall (met _ _) Ps, to_k Ps [] DB.
+pred to_k i:list prop, i:list k, o:list k.
+to_k [] Acc Acc.
+to_k [met X Y | Ps] Acc DB :-
+  std.mem Acc (metf X Y), to_k Ps Acc DB.
+to_k [met X Y | Ps] Acc DB :-
+  not (std.mem Acc (metf X Y)), to_k Ps [metf X Y | Acc] DB.
+
+pred is_knows i:k.
+is_knows (knows _ _).
+
+pred ex5.
+ex5 :-
+  edb DB, fixpoint 1 DB Out,
+  std.filter Out is_knows Ks,
+  std.length Ks N,
+  print N "knows facts at the fixpoint".
+% ANCHOR_END: ex5
+
+main :- ex1, ex2, ex3, ex4, ex5.

@@ -1,0 +1,8 @@
+% expect: fail
+% Chapter 6: a λ reaches as far to the right as it can.
+accumulate lang.
+
+% ANCHOR: main
+main :-
+  C = all p\ att 1 p, print C.
+% ANCHOR_END: main

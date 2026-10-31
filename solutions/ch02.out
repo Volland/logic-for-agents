@@ -1,0 +1,20 @@
+works_at lena lumen
+
+event 2 call [anna, taras] kyiv (d 2000 10) (d 2000 11)
+
+in_country porto portugal
+
+held_in 2 ukraine
+
+no
+
+peers sofia sofia
+
+peers marco marco
+peers marco lena
+
+could_have_met anna anna lisbon
+could_have_met anna marco lisbon
+could_have_met anna lena lisbon
+could_have_met anna sofia lisbon
+

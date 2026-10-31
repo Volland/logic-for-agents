@@ -1,0 +1,9 @@
+% Chapter 3: test, cut, then bind.
+accumulate cut.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (rank_safe anna R),
+  show (rank_safe anna staff).
+% ANCHOR_END: q

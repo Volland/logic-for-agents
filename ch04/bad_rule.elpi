@@ -1,0 +1,10 @@
+% expect: fail
+% Chapter 4: a rule mixes up people and cities.
+accumulate world.
+
+% ANCHOR: rule
+pred portuguese o:person.
+portuguese P :- works_at P acme, in_country P portugal.
+% ANCHOR_END: rule
+
+main :- print "loaded".

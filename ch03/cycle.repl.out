@@ -1,0 +1,11 @@
+?- Success:
+  Boss = anna
+More? (y/N) Success:
+  Boss = marco
+More? (y/N) Success:
+  Boss = anna
+More? (y/N) Success:
+  Boss = marco
+More? (y/N) Success:
+  Boss = anna
+More? (y/N) ?- 

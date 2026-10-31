@@ -1,0 +1,6 @@
+?- Success:
+  Who = anna
+More? (y/N) Success:
+  Who = marco
+More? (y/N) No more solutions
+?- 

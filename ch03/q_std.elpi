@@ -1,0 +1,10 @@
+% Chapter 3: list predicates from std.
+accumulate lists.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (std.mem [anna, marco] P),
+  show (std.append [anna] [marco, lena] L),
+  show (std.length [anna, marco, lena] N).
+% ANCHOR_END: q

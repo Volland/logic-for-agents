@@ -1,0 +1,48 @@
+% Chapter 8: the vanilla meta-interpreter.
+accumulate world.
+
+kind rname type.
+type same_org, boss, report rname.
+
+pred colleague o:person, o:person.
+
+pred rule o:rname, o:prop, o:prop.
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O, differ X Y).
+rule boss   (colleague X Y) (reports_to X Y).
+rule report (colleague X Y) (reports_to Y X).
+
+pred direct o:prop, o:string.
+direct (works_at _ _)   "memory".
+direct (reports_to _ _) "memory".
+direct (differ _ _)     "check".
+
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+
+% ANCHOR: solve
+pred solve i:prop.
+solve true.
+solve (A, B) :-
+  solve A, solve B.
+solve G :-
+  direct G _, G.
+solve G :-
+  rule _ G Body, solve Body.
+% ANCHOR_END: solve
+
+% ANCHOR: ask
+pred ask i:prop.
+ask G :- solve G, !,
+  print "yes:" G.
+ask G :- print "no:" G.
+% ANCHOR_END: ask
+
+% ANCHOR: main
+main :-
+  ask (colleague taras lena),
+  ask (colleague anna lena),
+  (solve (colleague anna W),
+   print "anna and" W, fail
+  ; true).
+% ANCHOR_END: main

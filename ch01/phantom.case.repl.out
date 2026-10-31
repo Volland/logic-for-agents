@@ -1,0 +1,4 @@
+?- Success:
+  P = anna
+  Acme = acme
+More? (y/N) ?- 

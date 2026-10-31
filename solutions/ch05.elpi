@@ -1,0 +1,82 @@
+% Solutions to the Chapter 5 exercises.
+accumulate world.
+accumulate time.
+
+% Chapter 5's additions to the world.
+reports_to lena anna.
+pred owned_by o:org, o:org.
+owned_by kyivTech lumen.
+owned_by lumen    acme.
+pred route o:city, o:city.
+route porto  lisbon.
+route lisbon berlin.
+route berlin lviv.
+route lviv   kyiv.
+
+% Chapter 5's higher-order toolkit.
+pred closure i:(A -> A -> prop), i:A, o:A.
+closure R X Y :- R X Y.
+closure R X Z :- R X Y, closure R Y Z.
+pred inverse i:(A -> B -> prop), o:B, o:A.
+inverse R X Y :- R Y X.
+pred symmetric i:(A -> A -> prop), o:A, o:A.
+symmetric R X Y :- R X Y.
+symmetric R X Y :- R Y X.
+pred answers i:(A -> prop), o:list A.
+answers Q L :- std.findall (Q X) Gs, std.map Gs (pick Q) L.
+pred pick i:(A -> prop), i:prop, o:A.
+pick Q G X :- G = Q X.
+
+% ANCHOR: ex1
+% Exercise 5.1: everything Acme owns, directly or not.
+pred acme_owns o:org.
+acme_owns O :- closure (inverse owned_by) acme O.
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 5.2: people with no boss.
+pred no_boss i:person.
+no_boss P :- not (reports_to P _).
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 5.3: zero or more steps.
+pred star i:(A -> A -> prop), i:A, o:A.
+star _ X X.
+star R X Y :- closure R X Y.
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 5.4: minutes Anna spent in rooms with others.
+pred in_person i:person, i:int.
+in_person P Id :-
+  event Id K Who _ _ _, physical K, std.mem Who P.
+
+pred add_length i:int, i:int, o:int.
+add_length Id Acc Acc1 :-
+  event Id _ _ _ From To,
+  minutes From M1, minutes To M2,
+  Acc1 is Acc + M2 - M1.
+% ANCHOR_END: ex4
+
+% ANCHOR: ex5
+% Exercise 5.5: a closure that remembers where it has been.
+pred safe_closure i:(A -> A -> prop), i:A, o:A.
+safe_closure R X Y :- walk R [X] X Y.
+
+pred walk i:(A -> A -> prop), i:list A, i:A, o:A.
+walk R Seen X Y :- R X Y, not (std.mem Seen Y).
+walk R Seen X Z :-
+  R X Y, not (std.mem Seen Y), walk R [Y|Seen] Y Z.
+% ANCHOR_END: ex5
+
+main :-
+  answers acme_owns Os, print "acme owns:" Os,
+  std.filter [anna, marco, lena, taras, sofia] no_boss Free,
+  print "no boss:" Free,
+  answers (star reports_to taras) Up, print "taras up:" Up,
+  std.filter [1, 2] (in_person anna) Ids,
+  std.fold Ids 0 add_length Total,
+  print "anna in person:" Total "minutes",
+  answers (safe_closure (symmetric route) porto) Cs,
+  print "from porto:" Cs.

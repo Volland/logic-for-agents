@@ -1,0 +1,51 @@
+% Chapter 7: check a proposal before it becomes memory.
+accumulate rules.
+
+% ANCHOR: verdict
+kind verdict type.
+type ok verdict.
+type two_places
+  person -> int -> int -> verdict.
+type too_early
+  person -> int -> verdict.
+% ANCHOR_END: verdict
+
+% ANCHOR: judge
+pred judge i:prop, o:verdict.
+judge New ok :-
+  New => consistent.
+judge New (two_places P A B) :-
+  New => bilocated P A B.
+judge New (too_early P E) :-
+  New => unborn P E.
+% ANCHOR_END: judge
+
+% ANCHOR: proposals
+pred proposal o:string, o:prop.
+proposal "phantom" Ph :-
+  phantom Ph.
+proposal "call"
+  (event 8 call [lena, taras]
+     kyiv (d 2001 9) (d 2001 10)).
+proposal "early"
+  (event 9 meeting [sofia, taras]
+     lviv (d 900 9) (d 900 10)).
+% ANCHOR_END: proposals
+
+% ANCHOR: review
+pred review i:string.
+review Name :-
+  proposal Name New,
+  judge New V,
+  print Name "->" V.
+% ANCHOR_END: review
+
+% ANCHOR: main
+main :-
+  std.forall ["phantom", "call",
+              "early"] review,
+  std.findall (event _ _ _ _ _ _)
+              Es,
+  std.length Es N,
+  print "events in memory:" N.
+% ANCHOR_END: main

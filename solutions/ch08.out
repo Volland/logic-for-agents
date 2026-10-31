@@ -1,0 +1,22 @@
+ex1
+colleague marco sofia [peer]
+  reports_to marco anna [memory]
+  reports_to sofia anna [memory]
+  differ marco sofia [check]
+ex2
+[works_at anna acme, works_at marco acme]
+ex3
+colleague lena taras [sym colleague]
+  colleague taras lena [boss]
+    reports_to taras lena [memory]
+ex4
+depth 1: no proof
+colleague lena taras [sym colleague]
+  colleague taras lena [boss]
+    reports_to taras lena [memory]
+ex5
+colleague lena marco [peer]
+  reports_to lena anna [assumed]
+  reports_to marco anna [memory]
+  differ lena marco [check]
+afterwards: not colleagues

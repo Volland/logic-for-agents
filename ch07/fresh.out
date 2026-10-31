@@ -1,0 +1,6 @@
+fresh: c0
+X = anna: yes
+x = anna: no
+Y = x: no
+two: c0 c1
+x = y: no

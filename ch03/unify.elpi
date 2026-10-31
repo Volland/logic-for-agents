@@ -1,0 +1,27 @@
+% Chapter 3: unification, on toy terms first.
+accumulate world.
+
+% ANCHOR: toy
+kind thing type.
+type a, b  thing.
+type f     thing -> thing -> thing.
+type g     thing -> thing.
+% ANCHOR_END: toy
+
+% `try Eq L R` prints the equation, then what both sides
+% became, or `no` if they cannot be made equal.
+pred try i:string, i:A, i:A.
+try Eq L R :- L = R, print Eq "   yes:" L.
+try Eq L R :- not (L = R), print Eq "   no".
+
+% Each equation is its own clause, so its X and Y are its own.
+% ANCHOR: tries
+pred eq o:int.
+eq 1 :- try "f X b = f a Y" (f X b) (f a Y).
+eq 2 :- try "f a b = f b a" (f a b) (f b a).
+eq 3 :- try "f X X = f a Y" (f X X) (f a Y).
+eq 4 :- try "f X X = f a b" (f X X) (f a b).
+eq 5 :- try "X = g X      " X (g X).
+% ANCHOR_END: tries
+
+main :- eq 1, eq 2, eq 3, eq 4, eq 5.

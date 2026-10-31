@@ -1,0 +1,2 @@
+greedy.elpi:7:13: application of att has type claim but is used with type prop
+greedy.elpi:7:20: application of , has type prop but is used with type claim

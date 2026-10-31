@@ -1,0 +1,43 @@
+% Chapter 5: relations made from relations.
+accumulate more_world.
+pred closure i:(A -> A -> prop), i:A, o:A.
+closure R X Y :- R X Y.
+closure R X Z :- R X Y, closure R Y Z.
+pred answers i:(A -> prop), o:list A.
+answers Q L :- std.findall (Q X) Gs, std.map Gs (pick Q) L.
+pred pick i:(A -> prop), i:prop, o:A.
+pick Q G X :- G = Q X.
+
+% ANCHOR: inverse
+pred inverse i:(A -> B -> prop), o:B, o:A.
+inverse R X Y :- R Y X.
+% ANCHOR_END: inverse
+
+% ANCHOR: symmetric
+pred symmetric i:(A -> A -> prop), o:A, o:A.
+symmetric R X Y :- R X Y.
+symmetric R X Y :- R Y X.
+% ANCHOR_END: symmetric
+
+% ANCHOR: compose
+pred compose i:(A -> B -> prop), i:(B -> C -> prop),
+             o:A, o:C.
+compose R S X Z :- R X Y, S Y Z.
+% ANCHOR_END: compose
+
+% ANCHOR: colleague
+pred colleague o:person, o:person.
+colleague X Y :-
+  compose works_at (inverse works_at) X Y, not (X = Y).
+% ANCHOR_END: colleague
+
+% ANCHOR: main
+main :-
+  answers (inverse reports_to anna) D, print D,
+  answers (closure (inverse reports_to) anna) U, print U,
+  answers (symmetric route lisbon) N, print N,
+  answers (compose works_at (inverse works_at) anna) S,
+  print S,
+  answers (colleague anna) C, print C.
+% ANCHOR_END: main
+

@@ -1,0 +1,2 @@
+swap.elpi:6:9: acme has type org but is used with type person
+swap.elpi:6:14: anna has type person but is used with type org

@@ -1,0 +1,17 @@
+Anna and Lena met in Berlin on day 2000, from 10 to 12.
+  reject: bilocation
+    anna: event 1 in lisbon overlaps event 3 in berlin
+Lena and Taras had a call from Kyiv on day 2001, 9 to 10.
+  commit:
+    event 11 call [lena, taras] kyiv (d 2001 9) (d 2001 10).
+Taras now also reports to Anna.
+  reject: second_manager
+    taras reports to anna and to lena
+Sofia works at the Porto office of Acme.
+  parse: works_at: unknown key 'office' (expected: person, org)
+Olena works at Lumen.
+  parse: person: unknown person 'olena' (known: anna, lena,
+    marco, sofia, taras)
+Acme hired Sofia.
+  parse: person: acme is an org, not a person
+1 fact(s) committed

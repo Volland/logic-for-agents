@@ -1,0 +1,3 @@
+?- Success:
+  F = c0 \ and (att 1 c0) (got 1 c0)
+More? (y/N) ?- 

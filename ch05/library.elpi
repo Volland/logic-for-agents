@@ -1,0 +1,35 @@
+% Chapter 5: the std library's higher-order predicates.
+accumulate more_world.
+pred answers i:(A -> prop), o:list A.
+answers Q L :- std.findall (Q X) Gs, std.map Gs (pick Q) L.
+pred pick i:(A -> prop), i:prop, o:A.
+pick Q G X :- G = Q X.
+
+% ANCHOR: helpers
+pred everyone o:list person.
+everyone [anna, marco, lena, taras, sofia].
+
+pred employee_of o:org, o:person.
+employee_of O P :- works_at P O.
+
+pred length_of i:int, o:int.
+length_of Id M :-
+  event Id _ _ _ From To,
+  minutes From M1, minutes To M2, M is M2 - M1.
+
+pred add_length i:int, i:int, o:int.
+add_length Id Acc Acc1 :- length_of Id M, Acc1 is Acc + M.
+% ANCHOR_END: helpers
+
+% ANCHOR: main
+main :-
+  everyone All,
+  std.filter All (employee_of acme) Acme, print Acme,
+  std.map [marco, taras, lena] reports_to Bs, print Bs,
+  std.map [1, 2] length_of Ms, print Ms,
+  std.fold [1, 2] 0 add_length Total, print Total,
+  (std.forall [anna, marco] (employee_of acme),
+   print "the kickoff was all acme"),
+  (std.exists [anna, taras] (employee_of kyivTech),
+   print "the review had someone from kyivTech").
+% ANCHOR_END: main

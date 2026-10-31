@@ -1,0 +1,73 @@
+% Chapter 3: Datalog, bottom-up. A naive fixpoint in ELPI.
+%
+% Facts live in a list. Each round applies every rule to the
+% list, keeps what is new, and stops when a round adds nothing.
+accumulate world.
+
+reports_to sofia marco.
+
+% ANCHOR: facts
+kind fact type.
+type rep   person -> person -> fact.  % reports_to
+type chain person -> person -> fact.  % chain of command
+% ANCHOR_END: facts
+
+% ANCHOR: rules
+% The chain again, written left-recursively on purpose.
+pred rule i:list fact, o:fact.
+rule DB (chain X Y) :-
+  std.mem DB (rep X Y).
+rule DB (chain X Z) :-
+  std.mem DB (chain X Y),
+  std.mem DB (rep Y Z).
+% ANCHOR_END: rules
+
+% ANCHOR: step
+pred fresh i:list fact, o:fact.
+fresh DB F :-
+  rule DB F,
+  not (std.mem DB F).
+
+pred step i:list fact,
+          o:list fact.
+step DB New :-
+  std.findall (fresh DB _) Ps,
+  heads Ps [] New.
+% ANCHOR_END: step
+
+% ANCHOR: heads
+% Take F out of each `fresh DB F`, dropping repeats.
+pred heads i:list prop, i:list fact, o:list fact.
+heads [] Acc Acc.
+heads [fresh _ F | Ps] Acc New :-
+  std.mem Acc F, heads Ps Acc New.
+heads [fresh _ F | Ps] Acc New :-
+  not (std.mem Acc F), heads Ps [F | Acc] New.
+% ANCHOR_END: heads
+
+% ANCHOR: fixpoint
+pred fixpoint i:int, i:list fact, o:list fact.
+fixpoint N DB Out :- step DB New, next N DB New Out.
+
+pred next i:int, i:list fact, i:list fact, o:list fact.
+next N DB [] DB :- print "round" N "adds nothing: done".
+next N DB [F|Fs] Out :-
+  print "round" N "adds", each [F|Fs],
+  std.append DB [F|Fs] DB1,
+  N1 is N + 1,
+  fixpoint N1 DB1 Out.
+% ANCHOR_END: fixpoint
+
+pred each i:list fact.
+each [].
+each [F|Fs] :- print "  " F, each Fs.
+
+% ANCHOR: edb
+% The starting facts: every reports_to in memory, as data.
+pred edb o:list fact.
+edb DB :- std.findall (reports_to _ _) Ps, to_rep Ps DB.
+
+pred to_rep i:list prop, o:list fact.
+to_rep [] [].
+to_rep [reports_to X Y | Ps] [rep X Y | DB] :- to_rep Ps DB.
+% ANCHOR_END: edb

@@ -1,0 +1,8 @@
+% Chapter 2: has Taras visited Ukraine?
+accumulate rules.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (visited_country taras ukraine).
+% ANCHOR_END: q

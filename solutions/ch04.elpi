@@ -1,0 +1,60 @@
+% Solutions to the Chapter 4 exercises.
+accumulate world.
+accumulate time.
+
+% ANCHOR: ex1
+% Exercise 4.1: a new kind and a typed predicate.
+kind skill type.
+type elpi, python, lean skill.
+
+pred has_skill o:person, o:skill.
+has_skill anna  elpi.
+has_skill anna  lean.
+has_skill taras python.
+has_skill lena  elpi.
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 4.2: of the four proposals, only these two load.
+%   reports_to anna acme.       acme is an org, not a person
+%   born lena (d 1990).         d needs a day AND an hour
+reports_to sofia lena.
+event 7 call [lena] lviv (d 2001 9) (d 2001 10).
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 4.3: the head is all variables, so the i: mode
+% has nothing to match against. The body's call to event
+% binds Id.
+pred length_of i:int, o:int.
+length_of Id M :-
+  event Id _ _ _ From To,
+  minutes From M1, minutes To M2, M is M2 - M1.
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 4.4: typed proposals and a reason for "no".
+kind proposal type.
+type joins   person -> org -> proposal.
+type reports person -> person -> proposal.
+
+pred check i:proposal, o:option string.
+check (joins P O) (some "already works elsewhere") :-
+  works_at P O1, not (O1 = O).
+check (joins P _) none :- not (works_at P _).
+check (joins P O) none :- works_at P O.
+check (reports P P) (some "nobody is their own boss").
+check (reports P M) none :- not (P = M).
+% ANCHOR_END: ex4
+
+pred show i:proposal.
+show Prop :- check Prop R, print Prop "->" R.
+
+main :-
+  (has_skill P elpi, print "elpi:" P, fail ; true),
+  (reports_to sofia B, print "sofia reports to" B),
+  length_of Id 60, print "a 60-minute event:" Id,
+  show (joins anna lumen),
+  show (joins sofia lumen),
+  show (reports sofia sofia),
+  show (reports sofia anna).

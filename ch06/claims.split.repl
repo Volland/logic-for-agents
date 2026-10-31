@@ -1,0 +1,4 @@
+all (x\ and (A x) (B x)) =
+  all (p\ and (att 1 p)
+              (got 1 p)).
+

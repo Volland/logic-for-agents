@@ -1,0 +1,86 @@
+% Solutions to the exercises of Chapter 6.
+accumulate world.
+
+% The claim language and `holds`, restated from ch06/.
+kind claim type.
+type att  int -> person -> claim.
+type got  int -> person -> claim.
+type rep  person -> person -> claim.
+type and  claim -> claim -> claim.
+type imp  claim -> claim -> claim.
+type all  (person -> claim) -> claim.
+type ex   (person -> claim) -> claim.
+
+pred people o:list person.
+people [anna, marco, lena, taras, sofia].
+
+pred attends o:int, o:person.
+attends E P :- event E _ Who _ _ _, std.mem Who P.
+
+pred slides o:int, o:person.
+slides 1 anna.
+slides 1 marco.
+
+pred holds i:claim.
+holds (att E P) :- attends E P.
+holds (got E P) :- slides E P.
+holds (rep P M) :- reports_to P M.
+holds (and A B) :- holds A, holds B.
+holds (imp A _) :- not (holds A).
+holds (imp A B) :- holds A, holds B.
+holds (all F) :- people Ps, std.forall Ps (p\ holds (F p)).
+holds (ex F)  :- people Ps, std.mem Ps P, holds (F P).
+
+pred say i:string, i:claim.
+say Name C :- holds C, print Name "true".
+say Name C :- not (holds C), print Name "false".
+
+% ANCHOR: ex1
+ex1 :-
+  say "1a" (and (att 1 marco) (got 1 marco)),
+  say "1b" (ex p\ and (att 2 p) (rep p lena)),
+  say "1c" (all p\ imp (att 1 p) (rep p anna)).
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Not `none`: that is option's `none`, and one name
+% should have one meaning (the `ex`, not `some`, rule).
+type nobody (person -> claim) -> claim.  % for no person
+holds (nobody F) :-
+  people Ps, std.forall Ps (p\ not (holds (F p))).
+
+ex2 :-
+  say "2a" (nobody p\ and (att 2 p) (got 1 p)),
+  say "2b" (nobody p\ got 2 p).
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+ex3 :-
+  C = (ex p\ ex m\ and (att 1 p)
+                       (and (rep p m) (att 1 m))),
+  C = ex (p\ ex (m\ and (A p) (B p m))),
+  print "A =" A, print "B =" B,
+  (C = ex (p\ ex (m\ and (A2 m) (B2 p m))),
+   print "A2 =" A2 ; print "A2: no solution").
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Count the atoms of a claim. To look inside a binder we
+% apply its body to a person; any person gives the same
+% count, because the body cannot look at who it gets.
+pred atoms i:claim, o:int.
+atoms (att _ _) 1.
+atoms (got _ _) 1.
+atoms (rep _ _) 1.
+atoms (and A B) N :- atoms A N1, atoms B N2, N is N1 + N2.
+atoms (imp A B) N :- atoms A N1, atoms B N2, N is N1 + N2.
+atoms (all F) N :- atoms (F anna) N.
+atoms (ex F)  N :- atoms (F anna) N.
+
+ex4 :-
+  atoms (ex p\ ex m\ and (att 1 p)
+                         (and (rep p m) (att 1 m))) N,
+  print "atoms:" N.
+% ANCHOR_END: ex4
+
+main :- ex1, ex2, ex3, ex4.

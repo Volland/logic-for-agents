@@ -1,0 +1,35 @@
+% Chapter 5: which relations count as "knows" is a parameter.
+accumulate more_world.
+pred answers i:(A -> prop), o:list A.
+answers Q L :- std.findall (Q X) Gs, std.map Gs (pick Q) L.
+pred pick i:(A -> prop), i:prop, o:A.
+pick Q G X :- G = Q X.
+pred inverse i:(A -> B -> prop), o:B, o:A.
+inverse R X Y :- R Y X.
+
+% ANCHOR: met
+pred met o:person, o:person.
+met X Y :-
+  event _ _ Who _ _ _,
+  std.mem Who X, std.mem Who Y, not (X = Y).
+% ANCHOR_END: met
+
+% ANCHOR: knows
+typeabbrev relation (person -> person -> prop).
+
+pred knows i:list relation, o:person, o:person.
+knows Policy X Y :- std.mem Policy R, R X Y.
+% ANCHOR_END: knows
+
+% ANCHOR: policies
+pred policy o:string, o:list relation.
+policy "org chart" [reports_to, inverse reports_to].
+policy "met"       [met].
+% ANCHOR_END: policies
+
+% ANCHOR: main
+main :-
+  policy Name P, answers (knows P anna) K,
+  print Name ":" K, fail.
+main.
+% ANCHOR_END: main

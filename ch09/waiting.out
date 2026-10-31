@@ -1,0 +1,9 @@
+noted, T is X0
+  wake: d 2000 12
+T is now d 2000 12
+  wake: d 2000 9
+rejected 9:00
+W is X1
+Constraints:
+ after_review X1  /* suspended on X1 */
+State:

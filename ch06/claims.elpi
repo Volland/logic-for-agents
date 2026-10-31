@@ -1,0 +1,37 @@
+% Chapter 6: claims with bound variables, stored and checked.
+accumulate holds.
+
+% ANCHOR: noted
+% What the agent was told.
+pred noted o:string, o:claim.
+noted "slides"
+  (all p\ imp (att 1 p)
+              (got 1 p)).
+noted "both"
+  (ex p\ and (att 1 p)
+             (att 2 p)).
+noted "boss"
+  (ex p\ ex m\
+     and (att 1 p)
+         (and (rep p m)
+              (att 1 m))).
+noted "review"
+  (all p\ imp (att 2 p)
+              (got 1 p)).
+% ANCHOR_END: noted
+
+% ANCHOR: report
+pred report i:string.
+report K :- noted K C,
+            yes_no (holds C) K.
+% ANCHOR_END: report
+
+% ANCHOR: main
+main :-
+  std.forall ["slides", "both",
+              "boss", "review"]
+             report,
+  noted "both" Both,
+  witness Both W,
+  print "witness:" W.
+% ANCHOR_END: main

@@ -1,0 +1,40 @@
+% Chapter 1: the LLM proposes, the logic decides.
+accumulate world.
+accumulate time.
+
+% ANCHOR: proposals
+% Three things the LLM "remembers" from one chat log.
+pred proposed o:int, o:evkind, o:list person, o:city,
+              o:time, o:time.
+proposed 3 meeting [anna, lena] berlin
+           (d 2000 10) (d 2000 12).
+proposed 4 meeting [anna, lena] berlin
+           (d 2000 11) (d 2000 12).
+proposed 5 call    [anna, lena] berlin
+           (d 2000 10) (d 2000 11).
+% ANCHOR_END: proposals
+
+% ANCHOR: clash
+% Proposal Id would put P in two cities at once.
+pred clash i:int, o:person, o:city, o:city.
+clash Id P C1 C2 :-
+  proposed Id K1 W1 C1 S1 E1, physical K1, std.mem W1 P,
+  event _ K2 W2 C2 S2 E2,     physical K2, std.mem W2 P,
+  not (C1 = C2),
+  overlaps S1 E1 S2 E2.
+% ANCHOR_END: clash
+
+% ANCHOR: verdict
+pred verdict i:int.
+verdict Id :-
+  clash Id P C1 C2,
+  print Id "rejected:" P
+        "in" C1 "and" C2.
+verdict Id :-
+  not (clash Id _ _ _),
+  print Id "accepted".
+% ANCHOR_END: verdict
+
+% ANCHOR: main
+main :- std.forall [3, 4, 5] verdict.
+% ANCHOR_END: main

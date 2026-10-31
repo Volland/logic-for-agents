@@ -1,0 +1,3 @@
+all (x\ got 1 x) =
+  all (y\ got 1 y).
+

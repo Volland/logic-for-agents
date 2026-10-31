@@ -1,0 +1,28 @@
+% Part III: predicates that Python answers.
+% They are declared here, so rules can call them, and
+% have no clauses: `Program.declare` hands them to the
+% host functions in agent/host.py.
+accumulate world.
+accumulate time.
+
+% ANCHOR: host
+pred now o:time.                          % the clock
+pred calendar i:person, o:time, o:time.   % busy slots
+pred same_person i:string, o:person.      % the LLM
+% ANCHOR_END: host
+
+% ANCHOR: upcoming
+% Events that have not started yet.
+pred upcoming o:int.
+upcoming E :- now T, event E _ _ _ S _, before T S.
+% ANCHOR_END: upcoming
+
+% ANCHOR: free
+% P is free from S to T: no busy slot in the outside
+% calendar and no physical event in memory overlaps.
+pred free i:person, i:time, i:time.
+free P S T :-
+  not (calendar P A B, overlaps A B S T),
+  not (event _ K Who _ A B, std.mem Who P,
+       physical K, overlaps A B S T).
+% ANCHOR_END: free

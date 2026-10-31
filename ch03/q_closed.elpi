@@ -1,0 +1,8 @@
+% Chapter 3: the closed world.
+accumulate naf.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (not (attended lena 1)).
+% ANCHOR_END: q

@@ -1,0 +1,14 @@
+colleague taras lena [boss]
+  reports_to taras lena [memory]
+--
+2 reasons
+--
+colleague anna marco [same_org]
+  works_at anna acme [memory]
+  works_at marco acme [memory]
+  differ anna marco [check]
+--
+colleague anna marco [report]
+  reports_to marco anna [memory]
+--
+I do not think colleague anna lena

@@ -1,0 +1,8 @@
+% Chapter 2: who are Taras's colleagues?
+accumulate rules.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (colleague taras Q).
+% ANCHOR_END: q

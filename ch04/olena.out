@@ -1,0 +1,2 @@
+olena.elpi:6:9: undeclared constant 'olena'
+hint: if this is a builtin registered by a Lean module, run with --lean-env MODULE

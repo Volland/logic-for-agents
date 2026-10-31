@@ -1,0 +1,8 @@
+% Chapter 2: which events did Anna attend?
+accumulate rules.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (attended anna E).
+% ANCHOR_END: q

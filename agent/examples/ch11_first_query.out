@@ -1,0 +1,19 @@
+{'Org': 'acme'}
+True
+False
+anna
+marco
+2 answers, exhausted: False
+C = lisbon
+From = d 2000 10
+K = meeting
+To = d 2000 11
+Who = [anna, marco]
+[Const('anna'), Const('marco')] App('d', (2000, 10))
+True
+False
+ElpiError:
+<assert>:1:9: acme has type org but is used with type person
+<assert>:1:14: sofia has type person but is used with type org
+True
+out of fuel: the budget of 10000 steps ran out

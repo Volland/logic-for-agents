@@ -1,0 +1,8 @@
+% Chapter 3: how many people at each event?
+accumulate lists.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (headcount E N).
+% ANCHOR_END: q

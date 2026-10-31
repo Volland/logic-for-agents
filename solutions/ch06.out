@@ -1,0 +1,9 @@
+1a true
+1b true
+1c false
+2a false
+2b true
+A = c0 \ att 1 c0
+B = c0 \ c1 \ and (rep c0 c1) (att 1 c1)
+A2: no solution
+atoms: 3

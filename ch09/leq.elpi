@@ -1,0 +1,61 @@
+% Chapter 9: a CHR solver for "no later than" over times
+% that may still be unknown.
+accumulate world.
+accumulate time.
+
+% ANCHOR: chr
+constraint leq {
+  rule \ (leq X X).
+  rule (leq X Y) \ (leq X Y).
+  rule (leq X Y) \ (leq Y X)
+    <=> (X = Y).
+  rule (leq X Y) (leq Y Z)
+    <=> (leq X Z).
+}
+% ANCHOR_END: chr
+
+% ANCHOR: leq
+% leq A B: A is no later than B.
+pred leq o:time, o:time.
+leq A B :- var A, !,
+  declare_constraint
+    (leq A B) [A, B].
+leq A B :- var B, !,
+  declare_constraint
+    (leq A B) [A, B].
+leq A B :-
+  minutes A MA, minutes B MB,
+  MA =< MB.
+% ANCHOR_END: leq
+
+% ANCHOR: tell
+pred tell i:string, i:prop.
+tell Said G :- G, !,
+  print "ok:" Said.
+tell Said _ :-
+  print "no:" Said.
+% ANCHOR_END: tell
+
+% ANCHOR: story
+% Anna meets Lena, from S to E.
+pred story o:time, o:time.
+story S E :-
+  tell "after the review"
+       (leq (d 2000 11) S),
+  tell "it lasted a while"
+       (leq S E),
+  tell "over by noon"
+       (leq E (d 2000 12)),
+  tell "it began at 9:00"
+       (S = d 2000 9),
+  tell "it ended at 10:00"
+       (E = d 2000 10),
+  tell "it began at 11:00"
+       (S = d 2000 11).
+% ANCHOR_END: story
+
+% ANCHOR: main
+main :-
+  story S E,
+  print "S:" S, print "E:" E.
+% ANCHOR_END: main

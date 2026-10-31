@@ -1,0 +1,44 @@
+% Chapter 7: what if Lena had joined the kickoff?
+accumulate rules.
+
+% ANCHOR: lena
+lena_joins :-
+  print "lena joins:",
+  attends 1 lena =>
+    print_all (bilocated P A B).
+% ANCHOR_END: lena
+
+% ANCHOR: taras
+taras_joins :-
+  print "taras joins:",
+  attends 1 taras =>
+    print_all (bilocated P A B).
+% ANCHOR_END: taras
+
+% ANCHOR: phantom
+phantom_real :-
+  print "phantom:",
+  phantom Ph,
+  Ph =>
+    print_all (bilocated P A B).
+% ANCHOR_END: phantom
+
+% ANCHOR: both
+both :-
+  print "both:",
+  phantom Ph,
+  [attends 1 lena, Ph] =>
+    print_all (bilocated P A B).
+% ANCHOR_END: both
+
+% ANCHOR: after
+after :-
+  print "afterwards:",
+  print_all (attends 1 X),
+  yes_no (event 3 _ _ _ _ _)
+         "event 3?",
+  yes_no consistent "consistent?".
+% ANCHOR_END: after
+
+main :- lena_joins, taras_joins,
+        phantom_real, both, after.

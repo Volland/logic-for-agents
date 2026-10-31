@@ -1,0 +1,10 @@
+[{'E': '1'}, {'E': '2'}]
+[]
+free anna (d 2001 14) (d 2001 15) False
+free anna (d 2001 16) (d 2001 17) True
+free anna (d 2000 10) (d 2000 11) False
+free taras (d 2000 10) (d 2000 11) True
+ElpiError: host predicate 'now': LookupError: no host function
+  for 'now'
+ElpiError: host predicate 'now': TypeError: output 1 of now has
+  type time, got lisbon of type city

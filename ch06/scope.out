@@ -1,0 +1,2 @@
+scope.elpi:8:17: undeclared constant 'p'
+hint: if this is a builtin registered by a Lean module, run with --lean-env MODULE

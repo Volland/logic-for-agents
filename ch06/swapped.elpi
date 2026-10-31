@@ -1,0 +1,9 @@
+% expect: fail
+% Chapter 6: the binder has a type, so its body is checked.
+accumulate lang.
+
+% ANCHOR: main
+main :-
+  C = all (p\ att p 1),
+  print C.
+% ANCHOR_END: main

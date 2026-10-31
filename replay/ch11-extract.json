@@ -1,0 +1,36 @@
+{
+  "note": "Authored fixture, not a live recording: hand-written responses in the shape claude-sonnet-5-5 returns for agent/examples/ch11_json.py's prompt. They include mistakes on purpose.",
+  "model": "claude-sonnet-5-5",
+  "steps": [
+    {
+      "step": "the phantom",
+      "user": "Anna and Lena met in Berlin on day 2000, from 10 to 12.",
+      "response": "{\"facts\": [{\"pred\": \"event\", \"id\": 3, \"kind\": \"meeting\", \"who\": [\"anna\", \"lena\"], \"city\": \"berlin\", \"from\": {\"day\": 2000, \"hour\": 10}, \"to\": {\"day\": 2000, \"hour\": 12}}]}"
+    },
+    {
+      "step": "a good fact",
+      "user": "Lena and Taras had a call from Kyiv on day 2001, 9 to 10.",
+      "response": "{\"facts\": [{\"pred\": \"event\", \"id\": 11, \"kind\": \"call\", \"who\": [\"lena\", \"taras\"], \"city\": \"kyiv\", \"from\": {\"day\": 2001, \"hour\": 9}, \"to\": {\"day\": 2001, \"hour\": 10}}]}"
+    },
+    {
+      "step": "a second manager",
+      "user": "Taras now also reports to Anna.",
+      "response": "{\"facts\": [{\"pred\": \"reports_to\", \"person\": \"taras\", \"manager\": \"anna\"}]}"
+    },
+    {
+      "step": "an unknown key",
+      "user": "Sofia works at the Porto office of Acme.",
+      "response": "```json\n{\"facts\": [{\"pred\": \"works_at\", \"person\": \"sofia\", \"org\": \"acme\", \"office\": \"porto\"}]}\n```"
+    },
+    {
+      "step": "an unknown person",
+      "user": "Olena works at Lumen.",
+      "response": "{\"facts\": [{\"pred\": \"works_at\", \"person\": \"olena\", \"org\": \"lumen\"}]}"
+    },
+    {
+      "step": "arguments swapped",
+      "user": "Acme hired Sofia.",
+      "response": "{\"facts\": [{\"pred\": \"works_at\", \"person\": \"acme\", \"org\": \"sofia\"}]}"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+% Chapter 4: type abbreviations, pairs and options.
+accumulate world.
+
+% ANCHOR: abbrev
+typeabbrev span  (pair time time).
+typeabbrev crowd (list person).
+% ANCHOR_END: abbrev
+
+% ANCHOR: span_of
+pred span_of i:int, o:span.
+span_of Id (pr From To) :- event Id _ _ _ From To.
+
+pred crowd_of i:int, o:crowd.
+crowd_of Id Who :- event Id _ Who _ _ _.
+% ANCHOR_END: span_of
+
+% ANCHOR: boss
+pred boss i:person, o:option person.
+boss P (some M) :- reports_to P M.
+boss P none     :- not (reports_to P _).
+% ANCHOR_END: boss
+
+% ANCHOR: main
+main :-
+  span_of 1 S,  print "kickoff:" S,
+  crowd_of 1 W, print "attended by:" W,
+  boss marco B, print "marco's boss:" B,
+  boss anna A,  print "anna's boss:" A.
+% ANCHOR_END: main

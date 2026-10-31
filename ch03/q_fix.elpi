@@ -1,0 +1,7 @@
+% Chapter 3: the fixpoint on the memory.
+accumulate datalog.
+
+% ANCHOR: q
+main :-
+  edb DB, fixpoint 1 DB _.
+% ANCHOR_END: q

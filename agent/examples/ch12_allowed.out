@@ -1,0 +1,14 @@
+| reports_to X lena :- works_at X lumen.
+  rejected by the allowed check:
+  a rule may not define reports_to; rules may only define: knows
+| work_at lena acme.
+  rejected by the allowed check:
+  a fact may not be about work_at; facts may be about: event,
+    reports_to, works_at
+| in_country porto germany.
+  rejected by the allowed check:
+  a fact may not be about in_country; facts may be about: event,
+    reports_to, works_at
+| knows X Y :- rule N (met X Y) B, met X Y.
+  rejected by the allowed check:
+  rule may not be called here

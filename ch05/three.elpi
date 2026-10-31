@@ -1,0 +1,22 @@
+% Chapter 5: the same rule, written three times.
+accumulate more_world.
+
+% ANCHOR: three
+pred chain_of_command o:person, o:person.
+chain_of_command X Y :- reports_to X Y.
+chain_of_command X Z :- reports_to X Y, chain_of_command Y Z.
+
+pred chain_of_ownership o:org, o:org.
+chain_of_ownership X Y :- owned_by X Y.
+chain_of_ownership X Z :- owned_by X Y, chain_of_ownership Y Z.
+
+pred reachable o:city, o:city.
+reachable X Y :- route X Y.
+reachable X Z :- route X Y, reachable Y Z.
+% ANCHOR_END: three
+
+main :-
+  (chain_of_command taras B, print "taras ->" B, fail ; true),
+  (chain_of_ownership kyivTech O, print "kyivTech ->" O, fail
+  ; true),
+  (reachable porto C, print "porto ->" C, fail ; true).

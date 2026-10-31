@@ -1,0 +1,128 @@
+% Solutions to the Chapter 8 exercises.
+accumulate world.
+
+% --- the Chapter 8 rule base and interpreter, restated ---
+
+kind rname type.
+type same_org, boss, peer rname.
+type sym (person -> person -> prop) -> rname.
+
+pred colleague o:person, o:person.
+
+pred rule o:rname, o:prop, o:prop.
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O, differ X Y).
+rule boss (colleague X Y) (reports_to X Y).
+
+pred direct o:prop, o:string.
+direct (works_at _ _)   "memory".
+direct (reports_to _ _) "memory".
+direct (differ _ _)     "check".
+
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+
+kind proof type.
+type empty proof.
+type leaf string -> prop -> proof.
+type by rname -> prop -> proof -> proof.
+type and proof -> proof -> proof.
+
+pred solve i:int, i:prop, o:proof, o:int.
+solve F true empty F.
+solve F0 (A, B) (and P Q) F :-
+  solve F0 A P F1, solve F1 B Q F.
+solve F G (leaf From G) F :- direct G From, G.
+solve F0 G (by N G P) F :-
+  F0 > 0, F1 is F0 - 1,
+  rule N G Body, solve F1 Body P F.
+
+pred explain i:string, i:proof.
+explain _ empty.
+explain In (and P Q) :- explain In P, explain In Q.
+explain In (leaf From G) :- line In G From.
+explain In (by N G P) :-
+  term_to_string N Name, line In G Name,
+  In2 is In ^ "  ", explain In2 P.
+
+pred line i:string, i:prop, i:string.
+line In G Why :-
+  term_to_string G S,
+  L is In ^ S ^ " [" ^ Why ^ "]", print L.
+
+% ANCHOR: ex1
+% Exercise 8.1: Sofia joins and reports to Anna.
+reports_to sofia anna.
+
+% Two people who report to the same manager.
+rule peer (colleague X Y)
+  (reports_to X M, reports_to Y M,
+   differ X Y).
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 8.2: the memories an answer rests on.
+pred sources i:proof, o:list prop.
+sources empty [].
+sources (leaf "memory" G) [G] :- !.
+sources (leaf _ _) [].
+sources (by _ _ P) L :- sources P L.
+sources (and P Q) L :-
+  sources P L1, sources Q L2,
+  std.append L1 L2 L.
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 8.3: a meta-rule for symmetry.
+pred symmetric
+  o:(person -> person -> prop).
+symmetric colleague.
+
+rule (sym R) G (R Y X) :-
+  symmetric R, G = R X Y.
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 8.4: a depth limit. Both parts of a
+% conjunction get the same depth; a rule costs one.
+pred solve_d i:int, i:prop, o:proof.
+solve_d _ true empty.
+solve_d D (A, B) (and P Q) :-
+  solve_d D A P, solve_d D B Q.
+solve_d _ G (leaf From G) :-
+  direct G From, G.
+solve_d D G (by N G P) :-
+  D > 0, D1 is D - 1,
+  rule N G Body, solve_d D1 Body P.
+% ANCHOR_END: ex4
+
+% ANCHOR: ex5
+% Exercise 8.5: hypothetical goals. Assume H,
+% marked as such, only while solving G.
+solve F0 (H => G) P F :-
+  (direct H "assumed", H) =>
+    solve F0 G P F.
+% ANCHOR_END: ex5
+
+main :-
+  print "ex1",
+  solve 5 (colleague marco sofia) P1 _, !,
+  explain "" P1,
+  print "ex2",
+  solve 5 (colleague anna marco) P2 _, !,
+  sources P2 S2, print S2,
+  print "ex3",
+  solve 5 (colleague lena taras) P3 _, !,
+  explain "" P3,
+  print "ex4",
+  (solve_d 1 (colleague lena taras) P4, !,
+   explain "" P4 ; print "depth 1: no proof"),
+  (solve_d 2 (colleague lena taras) P5, !,
+   explain "" P5 ; print "depth 2: no proof"),
+  print "ex5",
+  solve 5 (reports_to lena anna =>
+            colleague lena marco) P6 _, !,
+  explain "" P6,
+  (solve 5 (colleague lena marco) _ _,
+   print "still colleagues"
+  ; print "afterwards: not colleagues").

@@ -1,0 +1,8 @@
+% Chapter 2: Anna's chain of command.
+accumulate chain.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (chain_of_command P anna).
+% ANCHOR_END: q

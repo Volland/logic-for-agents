@@ -1,0 +1,86 @@
+% Chapter 7: the rules every what-if in this chapter asks.
+% Loaded with `accumulate rules.`
+accumulate world.
+accumulate time.
+
+% ANCHOR: yes_no
+% Chapter 4's helper: run G once,
+% then say yes or no.
+pred yes_no i:prop, i:string.
+yes_no G Label :-
+  (G, print Label "yes"
+   ; print Label "no").
+% ANCHOR_END: yes_no
+
+% ANCHOR: print_all
+% Print every answer to G.
+pred print_all i:prop.
+print_all G :-
+  std.findall G L, L = [],
+  print "  (none)".
+print_all G :-
+  std.findall G L, not (L = []),
+  std.forall L (x\ print " " x).
+% ANCHOR_END: print_all
+
+% ANCHOR: attends
+pred attends o:int, o:person.
+attends E P :-
+  event E _ Who _ _ _,
+  std.mem Who P.
+% ANCHOR_END: attends
+
+% ANCHOR: colleague
+pred colleague o:person, o:person.
+colleague X Y :-
+  works_at X O, works_at Y O,
+  not (X = Y).
+% ANCHOR_END: colleague
+
+% ANCHOR: chain
+pred chain o:person, o:person.
+chain X Y :- reports_to X Y.
+chain X Z :- reports_to X Y,
+             chain Y Z.
+% ANCHOR_END: chain
+
+% ANCHOR: bilocated
+% P is at two physical events, in
+% two cities, at the same time.
+pred bilocated o:person,
+               o:int, o:int.
+bilocated P E1 E2 :-
+  attends E1 P, attends E2 P,
+  E1 < E2,
+  event E1 K1 _ C1 S1 T1,
+  event E2 K2 _ C2 S2 T2,
+  physical K1, physical K2,
+  not (C1 = C2),
+  overlaps S1 T1 S2 T2.
+% ANCHOR_END: bilocated
+
+% ANCHOR: unborn
+% P is at an event before birth.
+pred unborn o:person, o:int.
+unborn P E :-
+  attends E P,
+  event E _ _ _ S _,
+  born P B, before S B.
+% ANCHOR_END: unborn
+
+% ANCHOR: consistent
+pred consistent.
+consistent :-
+  not (bilocated _ _ _),
+  not (unborn _ _).
+% ANCHOR_END: consistent
+
+% ANCHOR: phantom
+% The LLM's phantom, as a clause
+% that nobody has believed yet.
+pred phantom o:prop.
+phantom
+  (event 3 meeting [anna, lena]
+     berlin (d 2000 10)
+     (d 2000 12)).
+% ANCHOR_END: phantom

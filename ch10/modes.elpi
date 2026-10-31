@@ -1,0 +1,13 @@
+#lf
+% A mode declaration catches a rule whose input is unknown.
+person : type.
+anna  : person.
+marco : person.
+reports_to : person -> person -> type.
+rt_marco : reports_to marco anna.
+chain : person -> person -> type.
+% ANCHOR: mode
+#mode chain +X -Y.
+one  : chain X Y <- reports_to X Y.
+skip : chain X Z <- chain Y Z.   % proposed by the LLM
+% ANCHOR_END: mode

@@ -1,0 +1,51 @@
+{
+  "note": "Authored fixture, not a live recording: hand-written responses in the shape claude-sonnet-5-5 returns for agent/formalize.py's prompts, with the mistakes on purpose. Each 'user' field is the exact message the agent sends, guard feedback included.",
+  "model": "claude-sonnet-5-5",
+  "steps": [
+    {
+      "step": "Prolog syntax",
+      "user": "Write λProlog clauses for: Sofia works at Lumen.",
+      "response": "works_at(sofia, lumen)."
+    },
+    {
+      "step": "syntax error",
+      "user": "Write λProlog clauses for: Two people know each other if they met, unless they are the same person.",
+      "response": "knows X Y :- met X Y, X \\= Y."
+    },
+    {
+      "step": "ill-typed clause",
+      "user": "Write λProlog clauses for: Sofia works at Acme.",
+      "response": "works_at acme sofia."
+    },
+    {
+      "step": "undeclared constant",
+      "user": "Write λProlog clauses for: Olena works at Lumen.",
+      "response": "works_at olena lumen."
+    },
+    {
+      "step": "a rule with a hole",
+      "user": "Write λProlog clauses for: Everyone at Acme knows each other.",
+      "response": "knows X Y :- works_at X acme."
+    },
+    {
+      "step": "a forbidden head",
+      "user": "Write λProlog clauses for: Everyone who works at Lumen reports to Lena.",
+      "response": "reports_to X lena :- works_at X lumen."
+    },
+    {
+      "step": "a rule that never stops",
+      "user": "Write λProlog clauses for: People who met know each other, and knowing goes both ways.",
+      "response": "```elpi\nknows X Y :- met X Y.\nknows X Y :- knows Y X.\n```"
+    },
+    {
+      "step": "a contradictory fact",
+      "user": "Write λProlog clauses for: Anna and Lena met in Berlin on day 2000, from 10 to 12.",
+      "response": "event 3 meeting [anna, lena] berlin (d 2000 10) (d 2000 12)."
+    },
+    {
+      "step": "a query in the wrong order",
+      "user": "Write one λProlog query for: When did the kickoff start, in minutes since day 0?",
+      "response": "minutes T M, event 1 _ _ _ T _"
+    }
+  ]
+}

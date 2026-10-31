@@ -1,0 +1,12 @@
+false  refused     bilocation     the phantom
+false  remembered  -              Berlin, after the kickoff
+false  remembered  -              a call nobody had
+false  refused     born_before    the sofia trap
+false  refused     second_manager a second boss for Marco
+false  refused     parse          arguments swapped
+true   refused     second_manager Taras now reports to Anna
+true   remembered  -              Sofia joins Acme
+true   remembered  -              Anna's talk in Porto
+true   refused     parse          Olena reports to Lena
+false proposals: 6, remembered 2, refused 4
+true proposals: 4, remembered 2, refused 2

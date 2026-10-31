@@ -1,0 +1,15 @@
+% Chapter 4: one membership predicate for lists of anything.
+accumulate world.
+
+% ANCHOR: member
+pred member i:list A, o:A.
+member [X|_] X.
+member [_|T] X :- member T X.
+% ANCHOR_END: member
+
+% ANCHOR: main
+main :-
+  member [anna, marco] P, print "a person:" P,
+  member [lisbon, kyiv] C, print "a city:" C,
+  member [1, 2, 3] N, print "a number:" N.
+% ANCHOR_END: main

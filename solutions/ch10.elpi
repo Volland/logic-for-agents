@@ -1,0 +1,66 @@
+% Chapter 10 solutions. Self-contained: a plain-λProlog
+% mirror of ch10/chain.elpi in which proof terms are data.
+accumulate world.
+
+% ANCHOR: terms
+kind proof type.
+type rt_marco, rt_taras, rt_sofia, rt_anna proof.
+type one  person -> person -> proof -> proof.
+type step person -> person -> person -> proof -> proof
+          -> proof.
+% ANCHOR_END: terms
+
+% ANCHOR: ex1
+% Exercise 10.1: with rt_anna (anna reports to lena) added
+% to chain.elpi, `--lf-proof 'chain sofia lena'` prints:
+%   step sofia lena marco
+%     (step marco lena anna (one anna lena rt_anna) rt_marco)
+%     rt_sofia
+% Two `step`s (sofia to marco, marco to anna), one `one`
+% (anna to lena), and three facts, used once each.
+pred ex1 o:proof.
+ex1 (step sofia lena marco
+       (step marco lena anna (one anna lena rt_anna) rt_marco)
+       rt_sofia).
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 10.2: a checker. Every choice is in the term, so
+% it never searches: one clause per rule, one per fact.
+pred evidence o:proof, o:person, o:person.
+evidence rt_marco marco anna.
+evidence rt_taras taras lena.
+evidence rt_sofia sofia marco.
+evidence rt_anna  anna  lena.
+
+pred check i:proof, o:person, o:person.
+check (one X Y R) X Y :- evidence R X Y.
+check (step X Z Y P R) X Z :-
+  evidence R X Y, check P Y Z.
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 10.3: a searcher that builds the term as it goes.
+pred search i:person, o:person, o:proof.
+search X Y (one X Y R) :- evidence R X Y.
+search X Z (step X Z Y P R) :-
+  evidence R X Y, search Y Z P.
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 10.4: a searcher with a bug. It takes any fact
+% that starts at X as a direct link to the goal. The
+% checker, not the searcher, decides what is printed.
+pred hasty i:person, i:person, o:proof.
+hasty X Z (one X Z R) :- evidence R X _.
+
+pred verdict i:proof, i:person, i:person.
+verdict P X Y :- check P X Y, !,
+  print "accepted for chain" X Y.
+verdict P _ _ :- print "rejected:" P.
+% ANCHOR_END: ex4
+
+main :-
+  ex1 P1, verdict P1 sofia lena,
+  search sofia lena P3, verdict P3 sofia lena,
+  hasty sofia lena P4, verdict P4 sofia lena.

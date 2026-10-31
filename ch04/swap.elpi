@@ -1,0 +1,9 @@
+% expect: fail
+% Chapter 4: the LLM swaps the arguments.
+accumulate world.
+
+% ANCHOR: proposal
+works_at acme anna.
+% ANCHOR_END: proposal
+
+main :- print "loaded".

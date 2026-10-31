@@ -1,0 +1,8 @@
+% Chapter 2: whom does Marco report to?
+accumulate chain.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (reports_to marco Boss).
+% ANCHOR_END: q

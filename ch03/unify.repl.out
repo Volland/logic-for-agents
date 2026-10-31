@@ -1,0 +1,7 @@
+?- Success:
+  Kind = meeting
+  Who = [anna, marco]
+  Where = lisbon
+  From = d 2000 10
+  To = d 2000 11
+More? (y/N) ?- 

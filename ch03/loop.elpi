@@ -1,0 +1,31 @@
+% Chapter 3: the left-recursion trap, shown safely.
+accumulate world.
+
+% ANCHOR: left
+pred chain_left o:person, o:person.
+chain_left X Z :-
+  reports_to X Z.
+chain_left X Z :-
+  chain_left X Y,
+  reports_to Y Z.
+% ANCHOR_END: left
+
+% ANCHOR: watched
+% chain_left with a depth counter and a print. Past depth 5
+% we stop by hand; lean-elpi would go on until its fuel ran out.
+pred watch i:int, o:person, o:person.
+watch D X _ :- print "depth" D ": chain_left" X "_", fail.
+watch _ X Z :- reports_to X Z.
+watch D X Z :- D < 5, D1 is D + 1,
+               watch D1 X Y, reports_to Y Z.
+% ANCHOR_END: watched
+
+% ANCHOR: right
+pred chain_of_command
+  o:person, o:person.
+chain_of_command X Z :-
+  reports_to X Z.
+chain_of_command X Z :-
+  reports_to X Y,
+  chain_of_command Y Z.
+% ANCHOR_END: right

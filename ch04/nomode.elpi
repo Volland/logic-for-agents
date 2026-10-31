@@ -1,0 +1,12 @@
+% expect: fail
+% Chapter 4: minutes again, with both arguments as outputs.
+accumulate world.
+
+% ANCHOR: minutes_o
+pred minutes_o o:time, o:int.
+minutes_o (d D H) M :- M is D * 1440 + H * 60.
+% ANCHOR_END: minutes_o
+
+% ANCHOR: main
+main :- minutes_o T 600, print T.
+% ANCHOR_END: main

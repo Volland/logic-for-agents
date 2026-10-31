@@ -1,0 +1,11 @@
+% Chapter 6: two binders with the same name stay apart.
+accumulate holds.
+
+% ANCHOR: main
+main :-
+  U = (p\ ex m\ and (rep p m)
+                    (att 1 m)),
+  C = all (m\ U m),
+  print C,
+  yes_no (holds C) "holds:".
+% ANCHOR_END: main

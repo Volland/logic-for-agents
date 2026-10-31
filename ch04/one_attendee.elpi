@@ -1,0 +1,9 @@
+% expect: fail
+% Chapter 4: one attendee where a list of attendees belongs.
+accumulate world.
+
+% ANCHOR: proposal
+event 3 meeting anna berlin (d 2000 10) (d 2000 12).
+% ANCHOR_END: proposal
+
+main :- print "loaded".

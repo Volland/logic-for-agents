@@ -1,0 +1,8 @@
+% Chapter 3: how long was the kickoff?
+accumulate lists.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (duration 1 Min).
+% ANCHOR_END: q

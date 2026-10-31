@@ -1,0 +1,18 @@
+% Chapter 5: it can pick a relation from a list we give it.
+accumulate more_world.
+
+% ANCHOR: pick
+pred linked_by i:list (person -> person -> prop),
+               o:(person -> person -> prop),
+               i:person, i:person.
+linked_by Rs R X Y :- std.mem Rs R, R X Y.
+
+main :- linked_by [works_at_same, reports_to] R marco anna,
+        print R.
+% ANCHOR_END: pick
+
+% ANCHOR: works_at_same
+pred works_at_same o:person, o:person.
+works_at_same X Y :-
+  works_at X O, works_at Y O, not (X = Y).
+% ANCHOR_END: works_at_same

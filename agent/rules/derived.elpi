@@ -1,0 +1,59 @@
+% Part III: what the agent derives from its memory.
+% Each rule is data (`rule`), so `prove` can explain it,
+% and one bridge clause per predicate runs it.
+accumulate world.
+accumulate time.
+accumulate explain.
+accumulate host.
+
+% ANCHOR: derived
+pred attends   o:int, o:person.
+pred colleague o:person, o:person.
+pred chain     o:person, o:person.  % chain of command
+pred met       o:person, o:person.  % at a physical event
+pred met_by_name i:string, i:string.
+% ANCHOR_END: derived
+
+% ANCHOR: differ
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+% ANCHOR_END: differ
+
+type listed, same_org, boss, up, met_at, by_name rname.
+
+% ANCHOR: rules
+rule listed (attends E P)
+  (event E _ Who _ _ _, std.mem Who P).
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O, differ X Y).
+rule boss (chain X Y) (reports_to X Y).
+rule up (chain X Z) (reports_to X Y, chain Y Z).
+rule met_at (met X Y)
+  (event _ K Who _ _ _, physical K,
+   std.mem Who X, std.mem Who Y, differ X Y).
+% ANCHOR_END: rules
+
+% ANCHOR: by_name
+% The LLM matches the names; the rules decide the rest.
+rule by_name (met_by_name A B)
+  (same_person A X, same_person B Y, met X Y).
+% ANCHOR_END: by_name
+
+% ANCHOR: bridge
+attends E P :- rule _ (attends E P) B, B.
+colleague X Y :- rule _ (colleague X Y) B, B.
+chain X Y :- rule _ (chain X Y) B, B.
+met X Y :- rule _ (met X Y) B, B.
+met_by_name A B :- rule _ (met_by_name A B) G, G.
+% ANCHOR_END: bridge
+
+% ANCHOR: direct
+direct (works_at _ _)           "memory".
+direct (reports_to _ _)         "memory".
+direct (born _ _)               "memory".
+direct (event _ _ _ _ _ _)      "memory".
+direct (physical _)             "memory".
+direct (std.mem _ _)            "check".
+direct (differ _ _)             "check".
+direct (same_person _ _)        "llm".
+% ANCHOR_END: direct

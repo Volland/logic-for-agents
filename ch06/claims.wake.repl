@@ -1,0 +1,4 @@
+T lena = and (att 1 lena)
+             (got 1 lena),
+T = (p\ and (att 1 p)
+             (got 1 marco)).

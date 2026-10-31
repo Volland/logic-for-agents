@@ -1,0 +1,5 @@
+f X b = f a Y    yes: f a b
+f a b = f b a    no
+f X X = f a Y    yes: f a a
+f X X = f a b    no
+X = g X          no

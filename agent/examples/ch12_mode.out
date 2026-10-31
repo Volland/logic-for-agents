@@ -1,0 +1,15 @@
+| knows X Y :- works_at X acme.
+  rejected by the mode check:
+  `knows X Y`: output 2 is Y, which the body never binds: a hole
+    in every answer
+| minutes T M, event 1 _ _ _ T _
+  rejected by the mode check:
+  `minutes T M`: input 1 (i:time) must be known, but T is not
+    bound yet
+| works_at X acme.
+  rejected by the mode check:
+  `works_at X acme`: output 1 is X, which a fact never binds: a
+    hole in every answer
+| event 1 _ _ _ T _, minutes T M
+  passes
+   {'M': '2880600', 'T': 'd 2000 10'}

@@ -1,0 +1,86 @@
+% Chapter 8: proof trees, printed as explanations.
+accumulate world.
+
+kind rname type.
+type same_org, boss, report rname.
+
+pred colleague o:person, o:person.
+
+pred rule o:rname, o:prop, o:prop.
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O, differ X Y).
+rule boss   (colleague X Y) (reports_to X Y).
+rule report (colleague X Y) (reports_to Y X).
+
+pred direct o:prop, o:string.
+direct (works_at _ _)   "memory".
+direct (reports_to _ _) "memory".
+direct (differ _ _)     "check".
+
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+
+% ANCHOR: proof
+kind proof type.
+type empty proof.
+type leaf string -> prop -> proof.
+type by rname -> prop -> proof
+          -> proof.
+type and proof -> proof -> proof.
+% ANCHOR_END: proof
+
+% ANCHOR: solve
+pred solve i:prop, o:proof.
+solve true empty.
+solve (A, B) (and P Q) :-
+  solve A P, solve B Q.
+solve G (leaf From G) :-
+  direct G From, G.
+solve G (by N G P) :-
+  rule N G Body, solve Body P.
+% ANCHOR_END: solve
+
+% ANCHOR: explain
+pred explain i:string, i:proof.
+explain _ empty.
+explain In (and P Q) :-
+  explain In P, explain In Q.
+explain In (leaf From G) :-
+  line In G From.
+explain In (by N G P) :-
+  term_to_string N Name,
+  line In G Name,
+  In2 is In ^ "  ",
+  explain In2 P.
+% ANCHOR_END: explain
+
+% ANCHOR: line
+pred line i:string, i:prop,
+          i:string.
+line In G Why :-
+  term_to_string G S,
+  L is In ^ S ^ " [" ^ Why ^ "]",
+  print L.
+% ANCHOR_END: line
+
+% ANCHOR: why
+pred why i:prop.
+why G :-
+  solve G P, !, explain "" P.
+why G :-
+  print "I do not think" G.
+% ANCHOR_END: why
+
+% ANCHOR: main
+main :-
+  why (colleague taras lena),
+  print "--",
+  std.findall
+    (solve (colleague anna marco) _) Ps,
+  std.length Ps N, print N "reasons",
+  (solve (colleague anna marco) P,
+   print "--", explain "" P, fail
+  ; true),
+  print "--",
+  why (colleague anna lena).
+% ANCHOR_END: main

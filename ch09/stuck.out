@@ -1,0 +1,6 @@
+ok: after 11:00
+ok: before 9:00
+Constraints:
+ before X0 (d 2000 9)  /* suspended on X0 */
+ before (d 2000 11) X0  /* suspended on X0 */
+State:

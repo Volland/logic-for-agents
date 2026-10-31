@@ -1,0 +1,3 @@
+?- Success:
+  T = c0 \ and (att 1 c0) (got 1 lena)
+More? (y/N) ?- 

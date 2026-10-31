@@ -1,0 +1,137 @@
+% Solutions to the exercises of Chapter 7.
+accumulate world.
+accumulate time.
+
+% Rules restated from ch07/rules.elpi.
+pred attends o:int, o:person.
+attends E P :- event E _ Who _ _ _, std.mem Who P.
+
+pred colleague o:person, o:person.
+colleague X Y :- works_at X O, works_at Y O, not (X = Y).
+
+pred bilocated o:person, o:int, o:int.
+bilocated P E1 E2 :-
+  attends E1 P, attends E2 P, E1 < E2,
+  event E1 K1 _ C1 S1 T1, physical K1,
+  event E2 K2 _ C2 S2 T2, physical K2,
+  not (C1 = C2), overlaps S1 T1 S2 T2.
+
+pred unborn o:person, o:int.
+unborn P E :-
+  attends E P, event E _ _ _ S _, born P B, before S B.
+
+pred phantom o:prop.
+phantom (event 3 meeting [anna, lena] berlin
+               (d 2000 10) (d 2000 12)).
+
+% ANCHOR: ex1
+ex1 :-
+  works_at sofia lumen => std.findall (colleague sofia W) Ws,
+  print "1 assumed:" Ws,
+  std.findall (colleague sofia V) Vs,
+  print "1 memory: " Vs.
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+ex2 :-
+  event 10 trip [marco] berlin (d 2000 9) (d 2000 12)
+    => std.findall (bilocated P A B) L,
+  print "2:" L.
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+kind verdict type.
+type two_places person -> int -> int -> verdict.
+type too_early  person -> int -> verdict.
+
+pred problem o:verdict.
+problem (two_places P A B) :- bilocated P A B.
+problem (too_early P E) :- unborn P E.
+
+pred problems i:list prop, o:list verdict.
+problems New Vs :-
+  New => std.findall (problem V) Ps,
+  std.map Ps (p\ v\ p = problem v) Vs.
+
+ex3 :-
+  phantom Ph,
+  problems [Ph] V1, print "3 phantom:" V1,
+  problems [attends 1 lena, Ph] V2,
+  print "3 with lena:" V2.
+% ANCHOR_END: ex3
+
+% The loose query language and its checker, from ch07/.
+kind thing type.
+type per person -> thing.
+type evt int -> thing.
+
+kind query type.
+type att  thing -> thing -> query.
+type rep  thing -> thing -> query.
+type and  query -> query -> query.
+type all  (thing -> query) -> query.
+type ex   (thing -> query) -> query.
+
+kind sort type.
+type a_person, an_event sort.
+
+pred sort_of i:thing, o:sort.
+sort_of (per _) a_person.
+sort_of (evt _) an_event.
+
+% ANCHOR: ex4
+type got  thing -> thing -> query.     % event, person
+
+pred wf i:query.
+wf (att E P) :- sort_of E an_event, sort_of P a_person.
+wf (got E P) :- sort_of E an_event, sort_of P a_person.
+wf (rep P M) :- sort_of P a_person, sort_of M a_person.
+wf (and A B) :- wf A, wf B.
+wf (all F) :- pi x\ sort_of x S => wf (F x), not (var S).
+wf (ex F)  :- pi x\ sort_of x S => wf (F x), not (var S).
+
+pred check i:string, i:query.
+check N Q :- wf Q, print N "well formed".
+check N Q :- not (wf Q), print N "rejected".
+
+ex4 :-
+  check "4a" (all x\ and (att (evt 1) x) (got (evt 1) x)),
+  check "4b" (all x\ got x (evt 1)),
+  check "4c" (all x\ got (evt 1) (per marco)).
+% ANCHOR_END: ex4
+
+% ANCHOR: ex5
+% Chapter 6's claims, now evaluated through `attends`, so
+% an assumption about `attends` reaches them.
+kind claim type.
+type c_att int -> person -> claim.
+type c_got int -> person -> claim.
+type c_imp claim -> claim -> claim.
+type c_all (person -> claim) -> claim.
+
+pred slides o:int, o:person.
+slides 1 anna.
+slides 1 marco.
+
+pred holds i:claim.
+holds (c_att E P) :- attends E P.
+holds (c_got E P) :- slides E P.
+holds (c_imp A _) :- not (holds A).
+holds (c_imp A B) :- holds A, holds B.
+holds (c_all F) :-
+  std.forall [anna, marco, lena, taras, sofia]
+             (p\ holds (F p)).
+
+pred noted o:string, o:claim.
+noted "slides" (c_all p\ c_imp (c_att 1 p) (c_got 1 p)).
+
+% K holds in memory but would not hold under New.
+pred breaks i:prop, o:string.
+breaks New K :- noted K C, holds C, not (New => holds C).
+
+ex5 :-
+  std.findall (breaks (attends 1 lena) K) L,
+  print "5:" L.
+% ANCHOR_END: ex5
+
+main :- ex1, ex2, ex3, ex4, ex5.

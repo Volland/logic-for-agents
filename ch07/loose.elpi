@@ -1,0 +1,45 @@
+% Chapter 7: a query language without types, and its checker.
+% Loaded with `accumulate loose.`
+accumulate world.
+
+% ANCHOR: loose
+% Every LLM name is a `thing`.
+kind thing type.
+type per person -> thing.
+type evt int -> thing.
+
+kind query type.
+% att Event Person
+type att thing -> thing -> query.
+% rep Person Manager
+type rep thing -> thing -> query.
+type and query -> query -> query.
+type all (thing -> query) -> query.
+type ex  (thing -> query) -> query.
+% ANCHOR_END: loose
+
+% ANCHOR: sorts
+kind sort type.
+type a_person, an_event sort.
+
+pred sort_of i:thing, o:sort.
+sort_of (per _) a_person.
+sort_of (evt _) an_event.
+% ANCHOR_END: sorts
+
+% ANCHOR: wf_atoms
+pred wf i:query.
+wf (att E P) :-
+  sort_of E an_event,
+  sort_of P a_person.
+wf (rep P M) :-
+  sort_of P a_person,
+  sort_of M a_person.
+wf (and A B) :- wf A, wf B.
+% ANCHOR_END: wf_atoms
+% ANCHOR: wf_binders
+wf (all F) :-
+  pi x\ sort_of x S => wf (F x).
+wf (ex F) :-
+  pi x\ sort_of x S => wf (F x).
+% ANCHOR_END: wf_binders

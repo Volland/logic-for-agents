@@ -1,0 +1,10 @@
+% Chapter 4: a misspelled predicate name is NOT caught.
+accumulate world.
+
+% ANCHOR: typo
+work_at lena acme.    % "work_at", not "works_at"
+% ANCHOR_END: typo
+
+% ANCHOR: main
+main :- works_at lena O, print "lena works at" O.
+% ANCHOR_END: main

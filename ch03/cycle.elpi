@@ -1,0 +1,16 @@
+% Chapter 3: a cycle in the data. The answers come back
+% again and again, for as long as we keep asking.
+accumulate world.
+
+% ANCHOR: cycle
+% The LLM proposes: Anna reports to Marco.
+reports_to anna marco.
+% ANCHOR_END: cycle
+
+pred chain_of_command
+  o:person, o:person.
+chain_of_command X Z :-
+  reports_to X Z.
+chain_of_command X Z :-
+  reports_to X Y,
+  chain_of_command Y Z.

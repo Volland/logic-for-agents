@@ -1,0 +1,14 @@
+lena joins:
+  (none)
+taras joins:
+  (none)
+phantom:
+  bilocated anna 1 3
+both:
+  bilocated lena 1 3
+  bilocated anna 1 3
+afterwards:
+  attends 1 anna
+  attends 1 marco
+event 3? no
+consistent? yes

@@ -1,0 +1,9 @@
+% Chapter 3: the same goals, the other order.
+accumulate naf.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (absent_bad P 2),
+  show (absent_bad marco 2).
+% ANCHOR_END: q

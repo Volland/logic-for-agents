@@ -1,0 +1,2 @@
+swapped.elpi:7:18: p has type person but is used with type int
+swapped.elpi:7:20: integer has type int but is used with type person

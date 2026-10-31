@@ -1,0 +1,6 @@
+| event 3 meeting [anna, lena] berlin (d 2000 10) (d 2000 12).
+  rejected by the consistency check:
+  bilocation: anna: event 1 in lisbon overlaps event 3 in berlin
+| reports_to marco lena.
+  rejected by the consistency check:
+  second_manager: marco reports to anna and to lena

@@ -1,0 +1,8 @@
+% Chapter 2: a question with two holes.
+accumulate world.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (works_at Who Org).
+% ANCHOR_END: q

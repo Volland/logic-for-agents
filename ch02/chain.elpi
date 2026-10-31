@@ -1,0 +1,25 @@
+% Chapter 2: the chain of command, a rule that calls itself.
+accumulate world.
+
+% ANCHOR: sofia
+% Sofia joins Acme and reports to Marco.
+works_at sofia acme.
+reports_to sofia marco :- true.
+% ANCHOR_END: sofia
+
+% ANCHOR: skip_level
+pred skip_level
+  o:person, o:person.
+skip_level P M :-
+  reports_to P B, reports_to B M.
+% ANCHOR_END: skip_level
+
+% ANCHOR: chain
+pred chain_of_command
+  o:person, o:person.
+chain_of_command P M :-
+  reports_to P M.
+chain_of_command P M :-
+  reports_to P B,
+  chain_of_command B M.
+% ANCHOR_END: chain

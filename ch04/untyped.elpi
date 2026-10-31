@@ -1,0 +1,12 @@
+% Chapter 4: the world with its signature torn off.
+% No kind, no type, no pred: plain Prolog style.
+
+% ANCHOR: untyped
+works_at anna acme.
+works_at acme anna.   % the LLM's proposal
+% ANCHOR_END: untyped
+
+% ANCHOR: main
+main :- works_at X Y, print X "works at" Y, fail.
+main.
+% ANCHOR_END: main

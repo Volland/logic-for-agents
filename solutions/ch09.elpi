@@ -1,0 +1,87 @@
+% Solutions to the Chapter 9 exercises.
+accumulate world.
+accumulate time.
+
+% --- the Chapter 9 solver, restated ---
+
+constraint leq {
+  rule \ (leq X X).
+  rule (leq X Y) \ (leq X Y).
+  rule (leq X Y) \ (leq Y X) <=> (X = Y).
+  rule (leq X Y) (leq Y Z) <=> (leq X Z).
+}
+
+pred leq o:time, o:time.
+leq A B :- var A, !,
+  declare_constraint (leq A B) [A, B].
+leq A B :- var B, !,
+  declare_constraint (leq A B) [A, B].
+leq A B :- minutes A MA, minutes B MB, MA =< MB.
+
+pred tell i:string, i:prop.
+tell Said G :- G, !, print "ok:" Said.
+tell Said _ :- print "no:" Said.
+
+% ANCHOR: ex1
+% Exercise 9.1: wait until T is known, then
+% check it against the end of the kickoff.
+pred after_kickoff i:time.
+after_kickoff T :-
+  event 1 _ _ _ _ End, before End T.
+
+pred later_than_kickoff o:time.
+later_than_kickoff T :-
+  declare_constraint (after_kickoff T) [T].
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 9.2: Marco's trip, from S to E.
+pred marco_trip o:time, o:time.
+marco_trip S E :-
+  tell "it began after the kickoff"
+       (leq (d 2000 11) S),
+  tell "it was over before the review"
+       (leq E (d 2000 10)),
+  tell "it began before it ended"
+       (leq S E).
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 9.3: nobody acts before being born.
+pred alive_at i:person, o:time.
+alive_at P T :- born P B, leq B T.
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 9.4: keep only the tightest bounds.
+% A lower bound B under a later lower bound A
+% says nothing new; so does a looser upper bound.
+constraint leq {
+  rule (leq A X) \ (leq B X)
+    | (not (var A), not (var B), leq B A).
+  rule (leq X A) \ (leq X B)
+    | (not (var A), not (var B), leq A B).
+}
+% ANCHOR_END: ex4
+
+main :-
+  print "ex1",
+  (later_than_kickoff T1, T1 = d 2000 12,
+   print "accepted" T1 ; print "rejected"),
+  (later_than_kickoff T2, T2 = d 2000 9,
+   print "accepted" T2 ; print "rejected"),
+  print "ex2",
+  (marco_trip _ _, fail ; true),
+  print "ex3",
+  tell "Sofia gave a talk at T"
+       (alive_at sofia T3),
+  tell "T was on day 500"
+       (T3 = d 500 12),
+  tell "T was on day 1500"
+       (T3 = d 1500 12),
+  print "ex4",
+  tell "after 9:00" (leq (d 2000 9) S),
+  tell "after 11:00" (leq (d 2000 11) S),
+  tell "after 10:00" (leq (d 2000 10) S),
+  tell "before 17:00" (leq S (d 2000 17)),
+  tell "before 13:00" (leq S (d 2000 13)).

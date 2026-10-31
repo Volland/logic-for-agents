@@ -1,0 +1,28 @@
+#lf
+% Chapter 10: chain of command as an LF signature.
+% Judgments are types, rules are constants, and a
+% derivation is a term built from those constants.
+
+% ANCHOR: people
+person : type.
+anna  : person.
+marco : person.
+lena  : person.
+taras : person.
+sofia : person.
+% ANCHOR_END: people
+
+% ANCHOR: reports
+reports_to : person -> person -> type.
+rt_marco : reports_to marco anna.
+rt_taras : reports_to taras lena.
+rt_sofia : reports_to sofia marco.   % new here
+% ANCHOR_END: reports
+
+% ANCHOR: chain
+chain : person -> person -> type.
+one  : chain X Y <- reports_to X Y.
+step : chain X Z
+         <- reports_to X Y
+         <- chain Y Z.
+% ANCHOR_END: chain

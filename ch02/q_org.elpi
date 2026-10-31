@@ -1,0 +1,8 @@
+% Chapter 2: who is in Marco's organization?
+accumulate rules.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (same_org marco Q).
+% ANCHOR_END: q

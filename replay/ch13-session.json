@@ -1,0 +1,66 @@
+{
+  "note": "Authored fixture, not a live recording: hand-written responses in the shape claude-sonnet-5-5 returns for agent/loop.py's prompts. `python -m agent --live --record PATH` makes a real one.",
+  "model": "claude-sonnet-5-5",
+  "turns": [
+    "Sofia has joined Acme.",
+    "Who is above Marco in the chain of command?",
+    "Anna and Lena met in Berlin on day 2000, from 10 to 12.",
+    "Why are Sofia and Marco colleagues?",
+    "What if Lena reported to Anna? Who would be above Taras then?",
+    "Did Anya ever meet Marko in person?",
+    "Sofia and Taras met in Lviv on day 900, from 9 to 10.",
+    "Olena from Lumen reports to Lena."
+  ],
+  "steps": [
+    {
+      "step": "turn 1: a new fact",
+      "user": "Sofia has joined Acme.",
+      "response": "{\"do\": \"remember\", \"facts\": [{\"pred\": \"works_at\", \"person\": \"sofia\", \"org\": \"acme\"}]}"
+    },
+    {
+      "step": "turn 2: a query",
+      "user": "Who is above Marco in the chain of command?",
+      "response": "{\"do\": \"ask\", \"query\": \"chain marco M\"}"
+    },
+    {
+      "step": "turn 3: the phantom",
+      "user": "Anna and Lena met in Berlin on day 2000, from 10 to 12.",
+      "response": "{\"do\": \"remember\", \"facts\": [{\"pred\": \"event\", \"id\": 3, \"kind\": \"meeting\", \"who\": [\"anna\", \"lena\"], \"city\": \"berlin\", \"from\": {\"day\": 2000, \"hour\": 10}, \"to\": {\"day\": 2000, \"hour\": 12}}]}"
+    },
+    {
+      "step": "turn 4: an explanation",
+      "user": "Why are Sofia and Marco colleagues?",
+      "response": "{\"do\": \"why\", \"goal\": \"colleague sofia marco\"}"
+    },
+    {
+      "step": "turn 5: a what-if",
+      "user": "What if Lena reported to Anna? Who would be above Taras then?",
+      "response": "{\"do\": \"what_if\", \"assume\": [{\"pred\": \"reports_to\", \"person\": \"lena\", \"manager\": \"anna\"}], \"query\": \"chain taras M\"}"
+    },
+    {
+      "step": "turn 6: names the world does not know",
+      "user": "Did Anya ever meet Marko in person?",
+      "response": "{\"do\": \"ask\", \"query\": \"met_by_name \\\"Anya\\\" \\\"Marko\\\"\"}"
+    },
+    {
+      "step": "turn 6: same_person, called from the rule",
+      "user": "Anya",
+      "response": "{\"person\": \"anna\"}"
+    },
+    {
+      "step": "turn 6: same_person, called from the rule",
+      "user": "Marko",
+      "response": "{\"person\": \"marco\"}"
+    },
+    {
+      "step": "turn 7: the sofia trap",
+      "user": "Sofia and Taras met in Lviv on day 900, from 9 to 10.",
+      "response": "{\"do\": \"remember\", \"facts\": [{\"pred\": \"event\", \"id\": 30, \"kind\": \"meeting\", \"who\": [\"sofia\", \"taras\"], \"city\": \"lviv\", \"from\": {\"day\": 900, \"hour\": 9}, \"to\": {\"day\": 900, \"hour\": 10}}]}"
+    },
+    {
+      "step": "turn 8: a person the world does not have",
+      "user": "Olena from Lumen reports to Lena.",
+      "response": "{\"do\": \"remember\", \"facts\": [{\"pred\": \"reports_to\", \"person\": \"olena\", \"manager\": \"lena\"}]}"
+    }
+  ]
+}

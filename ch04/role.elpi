@@ -1,0 +1,13 @@
+% expect: fail
+% Chapter 4: a constructor applied to the wrong kind of thing.
+accumulate world.
+kind role type.
+type engineer role.
+type lead org -> role.
+pred has_role o:person, o:role.
+
+% ANCHOR: bad
+has_role marco (lead anna).
+% ANCHOR_END: bad
+
+main :- print "loaded".

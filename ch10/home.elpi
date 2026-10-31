@@ -1,0 +1,22 @@
+#lf
+% Where everyone lives. One person is missing.
+person : type.
+anna  : person.
+marco : person.
+lena  : person.
+taras : person.
+sofia : person.
+city : type.
+kyiv   : city.
+lisbon : city.
+porto  : city.
+berlin : city.
+% ANCHOR: lives
+lives : person -> city -> type.
+#mode lives +P -C.
+l_anna  : lives anna  lisbon.
+l_marco : lives marco lisbon.
+l_lena  : lives lena  berlin.
+l_taras : lives taras kyiv.
+#total P (lives P _).
+% ANCHOR_END: lives

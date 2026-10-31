@@ -1,0 +1,31 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  examples:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install elan
+        run: curl -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain none
+      - name: Build lean-elpi
+        run: |
+          export PATH="$HOME/.elan/bin:$PATH"
+          git clone --depth 1 --branch v0.4.0 https://github.com/Volland/lean-elpi ../lean-elpi
+          cd ../lean-elpi && lake build && scripts/build-ffi.sh
+      - name: Examples and solutions
+        run: LEAN_ELPI=../lean-elpi/.lake/build/bin/lean-elpi python3 tests/run_elpi.py
+      - name: LF proof terms (Chapter 10)
+        run: LEAN_ELPI=../lean-elpi/.lake/build/bin/lean-elpi ch10/run_lf.sh
+      - name: Kernel-checked certificates (Chapter 10)
+        run: export PATH="$HOME/.elan/bin:$PATH" && cd ch10/lean && lake build
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Agent
+        # leanelpi 0.4 (host predicates) is not on PyPI yet:
+        # install it from the lean-elpi checkout first.
+        run: |
+          pip install -e ../lean-elpi/bindings/python
+          pip install -e '.[dev]'
+          export LEANELPI_LIB=$PWD/../lean-elpi/dist/libleanelpi.dylib
+          pytest -q
+          python -m agent

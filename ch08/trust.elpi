@@ -1,0 +1,107 @@
+% Chapter 8: rules about which rules may be used.
+accumulate world.
+
+kind rname type.
+type same_org, boss, report rname.
+type oncall rname.
+
+pred colleague o:person, o:person.
+pred met o:person, o:person.
+met X Y :-
+  event _ _ Who _ _ _,
+  std.mem Who X, std.mem Who Y,
+  differ X Y.
+
+pred rule o:rname, o:prop, o:prop.
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O, differ X Y).
+rule boss   (colleague X Y) (reports_to X Y).
+rule report (colleague X Y) (reports_to Y X).
+% ANCHOR: oncall
+% Proposed by the LLM.
+rule oncall (colleague X Y)
+  (met X Y).
+% ANCHOR_END: oncall
+
+pred direct o:prop, o:string.
+direct (works_at _ _)   "memory".
+direct (reports_to _ _) "memory".
+direct (met _ _)        "events".
+direct (differ _ _)     "check".
+
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+
+% ANCHOR: trust
+kind level type.
+type curated, learned level.
+
+pred trust o:rname, o:level.
+trust same_org curated.
+trust boss     curated.
+trust report   curated.
+trust oncall   learned.
+% ANCHOR_END: trust
+
+% ANCHOR: policy
+kind purpose type.
+type answer, hint purpose.
+
+pred accepts o:purpose, o:level.
+accepts answer curated.
+accepts hint   curated.
+accepts hint   learned.
+% ANCHOR_END: policy
+
+kind proof type.
+type empty proof.
+type leaf string -> prop -> proof.
+type by rname -> prop -> proof -> proof.
+type and proof -> proof -> proof.
+
+% ANCHOR: solve
+pred solve i:purpose, i:prop,
+           o:proof.
+solve _ true empty.
+solve U (A, B) (and P Q) :-
+  solve U A P, solve U B Q.
+solve _ G (leaf From G) :-
+  direct G From, G.
+solve U G (by N G P) :-
+  rule N G Body,
+  trust N L, accepts U L,
+  solve U Body P.
+% ANCHOR_END: solve
+
+pred explain i:string, i:proof.
+explain _ empty.
+explain In (and P Q) :- explain In P, explain In Q.
+explain In (leaf From G) :- line In G From.
+explain In (by N G P) :-
+  trust N L,
+  term_to_string N Name, term_to_string L Lvl,
+  Why is Name ^ ", " ^ Lvl,
+  line In G Why,
+  In2 is In ^ "  ", explain In2 P.
+
+pred line i:string, i:prop, i:string.
+line In G Why :-
+  term_to_string G S,
+  L is In ^ S ^ " [" ^ Why ^ "]", print L.
+
+% ANCHOR: why
+pred why i:purpose, i:prop.
+why U G :-
+  solve U G P, !, explain "" P.
+why U G :-
+  print "no" U "for" G.
+% ANCHOR_END: why
+
+% ANCHOR: main
+main :-
+  why answer (colleague anna taras),
+  print "--",
+  why hint (colleague anna taras),
+  print "--",
+  why answer (colleague taras lena).
+% ANCHOR_END: main

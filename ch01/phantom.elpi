@@ -1,0 +1,24 @@
+% Chapter 1: a first look. The phantom meeting meets one rule.
+accumulate world.
+accumulate time.
+
+% ANCHOR: phantom
+% The LLM "remembers": Anna and Lena met in Berlin,
+% 10:00 to 12:00 on day 2000.
+pred proposed o:int, o:evkind, o:list person, o:city,
+              o:time, o:time.
+proposed 3 meeting [anna, lena] berlin
+           (d 2000 10) (d 2000 12).
+% ANCHOR_END: phantom
+
+% ANCHOR: bilocation
+% Nobody can be in two places at once.
+pred bilocated o:person, o:city, o:city.
+bilocated P C1 C2 :-
+  proposed _ K1 W1 C1 S1 E1, physical K1, std.mem W1 P,
+  event _ K2 W2 C2 S2 E2,    physical K2, std.mem W2 P,
+  not (C1 = C2),
+  overlaps S1 E1 S2 E2.
+% ANCHOR_END: bilocation
+
+main :- bilocated P C1 C2, print P "in" C1 "and" C2.

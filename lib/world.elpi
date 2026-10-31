@@ -1,0 +1,75 @@
+% The running example: an assistant agent's memory.
+%
+% People, places, organizations and events in time. The same small
+% fictional world as *Bulletproof Knowledge*, written as λProlog
+% facts. Every chapter loads it with `accumulate world.`
+%
+% Never edit this file from a chapter: extend the world in the
+% chapter's own file.
+
+% ANCHOR: kinds
+kind person   type.
+kind city     type.
+kind country  type.
+kind org      type.
+kind evkind   type.
+% ANCHOR_END: kinds
+
+% ANCHOR: individuals
+type anna, marco, lena, taras, sofia   person.
+type kyiv, lviv, lisbon, porto, berlin city.
+type ukraine, portugal, germany        country.
+type acme, lumen, kyivTech             org.
+type meeting, call, talk, trip         evkind.
+% ANCHOR_END: individuals
+
+% ANCHOR: time
+% A moment is a day and an hour:
+% (d 2000 10) is 10:00 on day 2000.
+kind time type.
+type d int -> int -> time.
+% ANCHOR_END: time
+
+% ANCHOR: places
+pred in_country o:city, o:country.
+in_country kyiv   ukraine.
+in_country lviv   ukraine.
+in_country lisbon portugal.
+in_country porto  portugal.
+in_country berlin germany.
+% ANCHOR_END: places
+
+% ANCHOR: physical
+% Calls are the only events that do not need you in the room.
+pred physical o:evkind.
+physical meeting.
+physical talk.
+physical trip.
+% ANCHOR_END: physical
+
+% ANCHOR: people
+pred born o:person, o:time.
+born anna  (d 0 0).
+born marco (d 0 0).
+born lena  (d 0 0).
+born taras (d 0 0).
+born sofia (d 1000 0).   % joins the world late: a trap
+
+pred works_at o:person, o:org.
+works_at anna  acme.
+works_at marco acme.
+works_at taras kyivTech.
+works_at lena  lumen.
+
+pred reports_to o:person, o:person.
+reports_to marco anna.
+reports_to taras lena.
+% ANCHOR_END: people
+
+% ANCHOR: events
+% event Id Kind Who Where From To
+pred event o:int, o:evkind, o:list person, o:city,
+           o:time, o:time.
+event 1 meeting [anna, marco] lisbon (d 2000 10) (d 2000 11).
+event 2 call    [anna, taras] kyiv   (d 2000 10) (d 2000 11).
+% ANCHOR_END: events

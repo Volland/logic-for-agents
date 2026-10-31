@@ -1,0 +1,21 @@
+% Chapter 5: a slightly bigger world. Every ch05 file loads it
+% with `accumulate more_world.` It adds one boss, one chain of
+% ownership and a few direct train routes.
+accumulate world.
+accumulate time.
+
+% ANCHOR: more
+% Lumen belongs to Acme, so Lena reports to Anna.
+reports_to lena anna.
+
+pred owned_by o:org, o:org.
+owned_by kyivTech lumen.
+owned_by lumen    acme.
+
+% Direct trains, one direction each.
+pred route o:city, o:city.
+route porto  lisbon.
+route lisbon berlin.
+route berlin lviv.
+route lviv   kyiv.
+% ANCHOR_END: more

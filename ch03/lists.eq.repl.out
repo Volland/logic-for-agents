@@ -1,0 +1,3 @@
+?- Success:
+  S = 2 + 3
+More? (y/N) ?- 

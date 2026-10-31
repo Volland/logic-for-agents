@@ -1,0 +1,28 @@
+% Chapter 6: a function without a name.
+accumulate world.
+
+% ANCHOR: portuguese
+% "a city in Portugal"
+pred portuguese o:(city -> prop).
+portuguese
+  (c\ in_country c portugal).
+% ANCHOR_END: portuguese
+
+main :-
+% ANCHOR: apply
+  portuguese F,
+  print "F =" F,
+  G = F lisbon,
+  print "G =" G,
+% ANCHOR_END: apply
+% ANCHOR: call
+  (F lisbon, print "lisbon: yes"
+   ; print "lisbon: no"),
+  (F berlin, print "berlin: yes"
+   ; print "berlin: no"),
+% ANCHOR_END: call
+% ANCHOR: filter
+  std.filter [kyiv, lviv, lisbon,
+              porto, berlin] F Cs,
+  print "filter:" Cs.
+% ANCHOR_END: filter

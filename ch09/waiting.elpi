@@ -1,0 +1,32 @@
+% Chapter 9: a goal that waits for its variable.
+accumulate world.
+accumulate time.
+
+% ANCHOR: after_review
+pred after_review i:time.
+after_review T :-
+  print "  wake:" T,
+  event 2 _ _ _ _ End,
+  before End T.
+% ANCHOR_END: after_review
+
+% ANCHOR: met_after
+pred met_after_review o:time.
+met_after_review T :-
+  declare_constraint
+    (after_review T) [T].
+% ANCHOR_END: met_after
+
+% ANCHOR: main
+main :-
+  met_after_review T,
+  print "noted, T is" T,
+  T = d 2000 12,
+  print "T is now" T,
+  (met_after_review U,
+   U = d 2000 9,
+   print "accepted 9:00"
+  ; print "rejected 9:00"),
+  met_after_review W,
+  print "W is" W.
+% ANCHOR_END: main

@@ -1,0 +1,4 @@
+?- Success:
+  H = anna
+  T = [marco, lena]
+More? (y/N) ?- 

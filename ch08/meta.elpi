@@ -1,0 +1,97 @@
+% Chapter 8: meta-rules. A relation declared transitive
+% gets its closure from one rule about rules.
+accumulate world.
+
+% ANCHOR: names
+kind rname type.
+type same_org, boss, report rname.
+type work, meet rname.
+type trans
+  (person -> person -> prop)
+  -> rname.
+% ANCHOR_END: names
+
+pred colleague o:person, o:person.
+
+% ANCHOR: knows
+pred knows o:person, o:person.
+pred met o:person, o:person.
+met X Y :-
+  event _ _ Who _ _ _,
+  std.mem Who X, std.mem Who Y,
+  differ X Y.
+% ANCHOR_END: knows
+
+% ANCHOR: transitive
+pred transitive
+  o:(person -> person -> prop).
+transitive knows.
+% ANCHOR_END: transitive
+
+pred rule o:rname, o:prop, o:prop.
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O, differ X Y).
+rule boss   (colleague X Y) (reports_to X Y).
+rule report (colleague X Y) (reports_to Y X).
+% ANCHOR: rules
+rule work (knows X Y)
+  (colleague X Y).
+rule meet (knows X Y) (met X Y).
+% ANCHOR_END: rules
+% ANCHOR: metarule
+rule (trans R) G (R X Y, R Y Z) :-
+  transitive R, G = R X Z.
+% ANCHOR_END: metarule
+
+pred direct o:prop, o:string.
+direct (works_at _ _)   "memory".
+direct (reports_to _ _) "memory".
+direct (met _ _)        "events".
+direct (differ _ _)     "check".
+
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+
+kind proof type.
+type empty proof.
+type leaf string -> prop -> proof.
+type by rname -> prop -> proof -> proof.
+type and proof -> proof -> proof.
+
+pred solve i:int, i:prop, o:proof, o:int.
+solve F true empty F.
+solve F0 (A, B) (and P Q) F :-
+  solve F0 A P F1, solve F1 B Q F.
+solve F G (leaf From G) F :- direct G From, G.
+solve F0 G (by N G P) F :-
+  F0 > 0, F1 is F0 - 1,
+  rule N G Body, solve F1 Body P F.
+
+pred explain i:string, i:proof.
+explain _ empty.
+explain In (and P Q) :- explain In P, explain In Q.
+explain In (leaf From G) :- line In G From.
+explain In (by N G P) :-
+  term_to_string N Name, line In G Name,
+  In2 is In ^ "  ", explain In2 P.
+
+pred line i:string, i:prop, i:string.
+line In G Why :-
+  term_to_string G S,
+  L is In ^ S ^ " [" ^ Why ^ "]", print L.
+
+pred why i:int, i:prop.
+why F G :-
+  solve F G P Left, !,
+  explain "" P,
+  Used is F - Left,
+  print "fuel used:" Used.
+why F G :-
+  print "no proof with fuel" F,
+  print "  for" G.
+
+% ANCHOR: main
+main :-
+  why 10 (knows marco lena),
+  why 10 (knows sofia anna).
+% ANCHOR_END: main

@@ -1,0 +1,9 @@
+% Chapter 2: the two new lines about Sofia.
+accumulate chain.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (works_at W acme),
+  show (reports_to sofia M).
+% ANCHOR_END: q

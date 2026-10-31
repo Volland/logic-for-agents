@@ -1,0 +1,17 @@
+Exercise 11.1
+Accepted
+Rejected second_manager: sofia reports to lena and to marco
+m0 []
+m1 [{'M': 'marco'}, {'M': 'anna'}]
+Exercise 11.2
+old rules: Accepted
+new rules: Rejected backwards: event 13 ends before it starts
+Exercise 11.3
+[{'E': '1', 'P': 'marco'}]
+ElpiError: host predicate 'office': TypeError: output 1 of
+    office has type city, got anna of type person
+Exercise 11.4
+Accepted
+Accepted
+True
+bilocation: lena: event 15 in porto overlaps event 16 in kyiv

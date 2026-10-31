@@ -1,0 +1,13 @@
+% Chapter 7: => adds a clause; it never replaces one.
+accumulate rules.
+
+% ANCHOR: main
+pred review_kind o:evkind.
+review_kind K :- event 2 K _ _ _ _.
+
+main :-
+  event 2 meeting [anna, taras]
+    kyiv (d 2000 10) (d 2000 11)
+    => print_all
+         (review_kind K).
+% ANCHOR_END: main

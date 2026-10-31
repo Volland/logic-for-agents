@@ -1,0 +1,29 @@
+% Chapter 3: one honest cut.
+accumulate world.
+
+% ANCHOR: rank
+kind rank type.
+type manager, staff rank.
+% ANCHOR_END: rank
+
+% ANCHOR: rank_of
+pred rank_of o:person, o:rank.
+rank_of P manager :-
+  reports_to _ P.
+rank_of _ staff.
+% ANCHOR_END: rank_of
+
+% ANCHOR: rank_cut
+pred rank_cut o:person, o:rank.
+rank_cut P manager :-
+  reports_to _ P, !.
+rank_cut _ staff.
+% ANCHOR_END: rank_cut
+
+% ANCHOR: rank_safe
+pred rank_safe o:person, o:rank.
+rank_safe P R :-
+  reports_to _ P, !,
+  R = manager.
+rank_safe _ staff.
+% ANCHOR_END: rank_safe

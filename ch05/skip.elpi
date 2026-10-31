@@ -1,0 +1,26 @@
+% Chapter 5: two more relations, made from one.
+accumulate more_world.
+pred closure i:(A -> A -> prop), i:A, o:A.
+closure R X Y :- R X Y.
+closure R X Z :- R X Y, closure R Y Z.
+pred answers i:(A -> prop), o:list A.
+answers Q L :- std.findall (Q X) Gs, std.map Gs (pick Q) L.
+pred pick i:(A -> prop), i:prop, o:A.
+pick Q G X :- G = Q X.
+
+pred inverse i:(A -> B -> prop), o:B, o:A.
+inverse R X Y :- R Y X.
+
+pred symmetric i:(A -> A -> prop), o:A, o:A.
+symmetric R X Y :- R X Y.
+symmetric R X Y :- R Y X.
+
+pred compose i:(A -> B -> prop), i:(B -> C -> prop),
+             o:A, o:C.
+compose R S X Z :- R X Y, S Y Z.
+
+% ANCHOR: main
+main :-
+  answers (compose reports_to reports_to taras) G, print G,
+  answers (inverse (inverse reports_to) taras) I, print I.
+% ANCHOR_END: main

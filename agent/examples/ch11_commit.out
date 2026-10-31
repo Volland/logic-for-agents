@@ -1,0 +1,21 @@
+Rejected
+bilocation
+  anna: event 1 in lisbon overlaps event 3 in berlin
+Accepted
+[{'P': 'lena'}, {'P': 'taras'}]
+[]
+0 1
+second_manager
+  taras reports to anna and to lena
+born_before
+  sofia: event 12 starts at d 900 9, birth is at d 1000 0
+duplicate_id
+  two different events have id 1
+ill_typed
+  <assert>:1:9: acme has type org but is used with type person
+  <assert>:1:14: sofia has type person but is used with type org
+unknown
+  <assert>:1:9: undeclared constant 'olena'
+event 11 call [lena, taras] kyiv (d 2001 9) (d 2001 10).
+works_at sofia lumen.
+1 2

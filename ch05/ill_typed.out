@@ -1,0 +1,1 @@
+ill_typed.elpi:9:16: works_at has type person -> org -> prop but is used with type person -> person -> prop

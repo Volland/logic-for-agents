@@ -1,0 +1,9 @@
+% expect: fail
+% Chapter 4: an employee number where a person belongs.
+accumulate world.
+
+% ANCHOR: proposal
+works_at 42 acme.
+% ANCHOR_END: proposal
+
+main :- print "loaded".

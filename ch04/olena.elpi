@@ -1,0 +1,9 @@
+% expect: fail
+% Chapter 4: a person the world has never heard of.
+accumulate world.
+
+% ANCHOR: proposal
+works_at olena acme.
+% ANCHOR_END: proposal
+
+main :- print "loaded".

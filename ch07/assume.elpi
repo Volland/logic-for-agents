@@ -1,0 +1,11 @@
+% Chapter 7: an assumption for one goal.
+accumulate rules.
+
+% ANCHOR: main
+main :-
+  G = colleague sofia anna,
+  yes_no G "before:",
+  (works_at sofia acme =>
+     yes_no G "during:"),
+  yes_no G "after:".
+% ANCHOR_END: main

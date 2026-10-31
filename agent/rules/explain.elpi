@@ -1,0 +1,31 @@
+% Part III: rules as data, and a meta-interpreter that
+% returns the proof of a derived fact as a tree.
+%
+% The agent loads every rule file into one program
+% (agent/world.py). The derived rules themselves are in
+% derived.elpi; this file only knows how to prove.
+
+% ANCHOR: proof
+kind rname type.
+kind proof type.
+type empty proof.
+type leaf  string -> prop -> proof.
+type by    rname -> prop -> proof -> proof.
+type and   proof -> proof -> proof.
+% ANCHOR_END: proof
+
+% ANCHOR: tables
+% rule Name Head Body: a derived rule, kept as data.
+pred rule o:rname, o:prop, o:prop.
+% direct Goal Source: a goal we take from a source
+% without a rule: "memory", "check", "llm", ...
+pred direct o:prop, o:string.
+% ANCHOR_END: tables
+
+% ANCHOR: prove
+pred prove i:prop, o:proof.
+prove true empty.
+prove (A, B) (and P Q) :- prove A P, prove B Q.
+prove G (leaf From G) :- direct G From, G.
+prove G (by N G P) :- rule N G Body, prove Body P.
+% ANCHOR_END: prove

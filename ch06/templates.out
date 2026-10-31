@@ -1,0 +1,6 @@
+T lena = and (att 1 lena) (got 1 lena)
+lena: no
+marco: yes
+briefed: [anna, marco]
+U marco = ex c0 \ and (rep marco c0) (att 1 c0)
+boss_there: [marco]

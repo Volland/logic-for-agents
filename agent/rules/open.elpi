@@ -1,0 +1,18 @@
+% Part III: the predicates the LLM may define (Chapter 12).
+% `assert_clause` adds clauses, never declarations, so
+% every predicate a generated rule defines is declared
+% here first. The declaration is the contract.
+accumulate derived.
+
+% ANCHOR: open
+pred knows o:person, o:person.
+% ANCHOR_END: open
+
+% A rule the LLM wrote is explained as one step.
+direct (knows _ _) "learned rule".
+
+% ANCHOR: question
+% A holder for LLM-written queries: the agent type-checks
+% `question :- Query.` before it runs Query.
+pred question.
+% ANCHOR_END: question

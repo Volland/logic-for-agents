@@ -1,0 +1,27 @@
+% Chapter 7: variables in an assumed rule are shared.
+accumulate rules.
+
+% ANCHOR: mgr
+pred mgr o:person, o:person.
+% ANCHOR_END: mgr
+
+% ANCHOR: free
+free :-
+  yes_no
+    ((mgr X Y :- reports_to X Y)
+       => (mgr marco anna,
+           mgr taras lena))
+    "free X Y:".
+% ANCHOR_END: free
+
+% ANCHOR: bound
+bound :-
+  yes_no
+    ((pi x\ pi y\ mgr x y :-
+                  reports_to x y)
+       => (mgr marco anna,
+           mgr taras lena))
+    "pi x y:".
+% ANCHOR_END: bound
+
+main :- free, bound.

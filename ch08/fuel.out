@@ -1,0 +1,8 @@
+colleague lena taras [sym]
+  colleague taras lena [boss]
+    reports_to taras lena [memory]
+fuel used: 2
+no proof with fuel 10
+  for colleague anna lena
+no proof with fuel 1
+  for colleague lena taras

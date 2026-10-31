@@ -1,0 +1,24 @@
+Exercise 12.1
+type        works_at sofia kyiv.
+mode        knows anna X.
+allowed     chain sofia anna.
+passes      knows X Y :- colleague X Y.
+passes      reports_to sofia sofia.
+Exercise 12.2
+| knows X Y :- works_at X acme.
+| knows X Y :- works_at X acme, works_at Y acme, differ X Y.
+> Rejected by the mode check:
+> `knows X Y`: output 2 is Y, which the body never binds: a hole
+>   in every answer
+> Answer again with corrected λProlog only.
+True [{'Y': 'anna'}]
+Exercise 12.3
+out of fuel: the budget of 10000 steps ran out
+consistency: self_report: sofia reports to sofia
+Exercise 12.4
+passes: [{'X': 'marco'}]
+mode: `trusts X Y`: output 2 is Y, which the body never binds: a
+    hole in every answer
+sandbox: out of fuel: the budget of 20000 steps ran out
+  while running `trusts X1 X2`
+allowed: reports_to is not open; open: knows, trusts

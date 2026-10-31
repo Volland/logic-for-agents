@@ -1,0 +1,9 @@
+% Chapter 10: a plain program that uses the LF signature.
+% `accumulate` erases it to ordinary types and clauses.
+% ANCHOR: plain
+accumulate chain.
+
+main :-
+  std.findall (chain sofia B) Bosses,
+  print Bosses.
+% ANCHOR_END: plain

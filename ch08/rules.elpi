@@ -1,0 +1,48 @@
+% Chapter 8: rules as data.
+% The colleague rules are not clauses of `colleague`.
+% They are facts about rules, stored in `rule`.
+accumulate world.
+
+% ANCHOR: names
+kind rname type.
+type same_org, boss, report rname.
+% ANCHOR_END: names
+
+% ANCHOR: object
+pred colleague o:person, o:person.
+% ANCHOR_END: object
+
+% ANCHOR: rules
+% rule Name Head Body
+pred rule o:rname, o:prop, o:prop.
+rule same_org (colleague X Y)
+  (works_at X O, works_at Y O,
+   differ X Y).
+rule boss (colleague X Y)
+  (reports_to X Y).
+rule report (colleague X Y)
+  (reports_to Y X).
+% ANCHOR_END: rules
+
+% ANCHOR: direct
+pred direct o:prop, o:string.
+direct (works_at _ _)   "memory".
+direct (reports_to _ _) "memory".
+direct (differ _ _)     "check".
+% ANCHOR_END: direct
+
+% ANCHOR: differ
+pred differ i:person, i:person.
+differ X Y :- not (X = Y).
+% ANCHOR_END: differ
+
+% ANCHOR: main
+main :-
+  (colleague taras lena, print "yes"
+  ; print "no"),
+  std.findall (rule _ (colleague _ _) _) Rs,
+  std.length Rs N,
+  print N "rules for colleague",
+  (rule boss H B, print H,
+   print "  :-" B, fail ; true).
+% ANCHOR_END: main

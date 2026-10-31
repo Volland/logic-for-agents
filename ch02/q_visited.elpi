@@ -1,0 +1,8 @@
+% Chapter 2: who visited which country?
+accumulate rules.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (visited_country P K).
+% ANCHOR_END: q

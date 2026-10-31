@@ -1,0 +1,4 @@
+?- Success:
+  T = X0
+ after_review X0  /* suspended on X0 */
+More? (y/N) ?- 

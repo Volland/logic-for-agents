@@ -1,0 +1,6 @@
+?- Success:
+  Above = marco
+More? (y/N) Success:
+  Above = anna
+More? (y/N) No more solutions
+?- 

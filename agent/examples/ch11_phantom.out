@@ -1,0 +1,7 @@
+{"facts": [{"pred": "event", "id": 3, "kind": "meeting", "who":
+  ["anna", "lena"], "city": "berlin", "from": {"day": 2000,
+  "hour": 10}, "to": {"day": 2000, "hour": 12}}]}
+dict -> str
+event 3 meeting [anna, lena] berlin (d 2000 10) (d 2000 12).
+Rejected
+bilocation: anna: event 1 in lisbon overlaps event 3 in berlin

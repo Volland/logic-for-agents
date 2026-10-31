@@ -1,0 +1,15 @@
+| works_at(sofia, lumen).
+  rejected by the type check:
+  <assert>:1:9: sofia has type person but is used with type prop
+  <assert>:1:16: lumen has type org but is used with type prop
+  <assert>:1:14: application of , has type prop but is used with
+    type person
+  <assert>:1:0: application of works_at has type org -> prop but
+    is used with type prop
+| works_at acme sofia.
+  rejected by the type check:
+  <assert>:1:9: acme has type org but is used with type person
+  <assert>:1:14: sofia has type person but is used with type org
+| works_at olena lumen.
+  rejected by the type check:
+  <assert>:1:9: undeclared constant 'olena'

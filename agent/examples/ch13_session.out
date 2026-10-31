@@ -1,0 +1,61 @@
+> Sofia has joined Acme.
+  llm: remember works_at
+Remembered:
+  works_at sofia acme.
+
+> Who is above Marco in the chain of command?
+  llm: ask chain marco M
+M = anna
+
+> Anna and Lena met in Berlin on day 2000, from 10 to 12.
+  llm: remember event
+I won't remember:
+  event 3 meeting [anna, lena] berlin (d 2000 10) (d 2000 12).
+It breaks the rule bilocation:
+  anna: event 1 in lisbon overlaps event 3 in berlin.
+
+> Why are Sofia and Marco colleagues?
+  llm: why colleague sofia marco
+Because:
+colleague sofia marco  [same_org]
+  works_at sofia acme  [memory]
+  works_at marco acme  [memory]
+  differ sofia marco  [check]
+
+> What if Lena reported to Anna? Who would be above Taras then?
+  llm: what if reports_to: chain taras M
+If that were true:
+  M = lena
+  M = anna
+Memory, unchanged, says:
+  M = lena
+
+> Did Anya ever meet Marko in person?
+  llm: ask met_by_name "Anya" "Marko"
+  llm: same_person "Anya" -> anna
+  llm: same_person "Marko" -> marco
+Yes. Because:
+met_by_name "Anya" "Marko"  [by_name]
+  same_person "Anya" anna  [llm]
+  same_person "Marko" marco  [llm]
+  met anna marco  [met_at]
+    event 1 meeting [anna, marco] lisbon (d 2000 10) (d 2000 11)  [memory]
+    physical meeting  [memory]
+    std.mem [anna, marco] anna  [check]
+    std.mem [anna, marco] marco  [check]
+    differ anna marco  [check]
+
+> Sofia and Taras met in Lviv on day 900, from 9 to 10.
+  llm: remember event
+I won't remember:
+  event 30 meeting [sofia, taras] lviv (d 900 9) (d 900 10).
+It breaks the rule born_before:
+  sofia: event 30 starts at d 900 9, birth is at d 1000 0.
+
+> Olena from Lumen reports to Lena.
+  llm: remember reports_to
+I can't read that: person: unknown person 'olena' (known: anna,
+  lena, marco, sofia, taras).
+
+memory: 1 new fact
+  works_at sofia acme.

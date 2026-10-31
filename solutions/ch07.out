@@ -1,0 +1,9 @@
+1 assumed: [colleague sofia lena]
+1 memory:  []
+2: [bilocated marco 1 10]
+3 phantom: [two_places anna 1 3]
+3 with lena: [two_places lena 1 3, two_places anna 1 3]
+4a well formed
+4b rejected
+4c rejected
+5: [breaks (attends 1 lena) slides]

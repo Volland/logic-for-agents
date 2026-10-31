@@ -1,0 +1,8 @@
+% Chapter 3: watching the loop.
+accumulate loop.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (watch 1 anna Boss).
+% ANCHOR_END: q

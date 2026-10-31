@@ -1,0 +1,8 @@
+% Chapter 2: two steps up.
+accumulate chain.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (skip_level P M).
+% ANCHOR_END: q

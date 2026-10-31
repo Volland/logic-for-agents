@@ -1,0 +1,10 @@
+| knows X Y :- met X Y, X \= Y.
+  rejected by the parse check:
+  <assert>:1:25: term expected, found '='
+| pred likes o:person, o:person.
+  rejected by the parse check:
+  only clauses are allowed: the signature is fixed
+| Knows anna marco.
+  rejected by the parse check:
+  the head of a clause must be a predicate, not the variable
+    Knows

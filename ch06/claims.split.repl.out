@@ -1,0 +1,4 @@
+?- Success:
+  A = c0 \ att 1 c0
+  B = c0 \ got 1 c0
+More? (y/N) ?- 

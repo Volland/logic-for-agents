@@ -1,0 +1,23 @@
+% Chapter 6: a tiny language of claims about the world.
+% Loaded by the other Chapter 6 files with `accumulate lang.`
+accumulate world.
+
+% ANCHOR: atoms
+kind claim type.
+% P attended event E
+type att int -> person -> claim.
+% P got the slides of event E
+type got int -> person -> claim.
+% P reports to M
+type rep person -> person -> claim.
+% ANCHOR_END: atoms
+
+% ANCHOR: connectives
+type and claim -> claim -> claim.
+type imp claim -> claim -> claim.
+% ANCHOR_END: connectives
+
+% ANCHOR: binders
+type all (person -> claim) -> claim.
+type ex  (person -> claim) -> claim.
+% ANCHOR_END: binders

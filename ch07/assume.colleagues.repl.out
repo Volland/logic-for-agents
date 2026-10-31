@@ -1,0 +1,6 @@
+?- Success:
+  W = anna
+More? (y/N) Success:
+  W = marco
+More? (y/N) ?- Failure
+?- 

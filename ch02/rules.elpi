@@ -1,0 +1,43 @@
+% Chapter 2: rules over the world.
+accumulate world.
+
+% ANCHOR: same_org
+pred same_org o:person, o:person.
+same_org P Q :-
+  works_at P O, works_at Q O.
+% ANCHOR_END: same_org
+
+% ANCHOR: colleague
+pred colleague o:person, o:person.
+colleague P Q :- same_org P Q.
+colleague P Q :- reports_to P Q.
+colleague P Q :- reports_to Q P.
+% ANCHOR_END: colleague
+
+% ANCHOR: attended
+pred attended o:person, o:int.
+attended P E :-
+  event E _ Who _ _ _,
+  std.mem Who P.
+% ANCHOR_END: attended
+
+% ANCHOR: met
+pred met o:person, o:person.
+met P Q :-
+  attended P E, attended Q E.
+% ANCHOR_END: met
+
+% ANCHOR: was_in
+pred was_in o:person, o:city.
+was_in P C :-
+  event _ K Who C _ _,
+  physical K,
+  std.mem Who P.
+% ANCHOR_END: was_in
+
+% ANCHOR: visited
+pred visited_country
+  o:person, o:country.
+visited_country P K :-
+  was_in P C, in_country C K.
+% ANCHOR_END: visited

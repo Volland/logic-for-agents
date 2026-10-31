@@ -1,0 +1,10 @@
+True
+met_by_name "Bob" "Marko"  [by_name]
+  same_person "Bob" anna  [llm]
+  same_person "Marko" marco  [llm]
+  met anna marco  [met_at]
+    event 1 meeting [anna, marco] lisbon (d 2000 10) (d 2000 11)  [memory]
+    physical meeting  [memory]
+    std.mem [anna, marco] anna  [check]
+    std.mem [anna, marco] marco  [check]
+    differ anna marco  [check]

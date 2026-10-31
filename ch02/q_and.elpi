@@ -1,0 +1,8 @@
+% Chapter 2: two goals joined by a comma.
+accumulate world.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (works_at X acme, reports_to X Boss).
+% ANCHOR_END: q

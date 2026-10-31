@@ -1,0 +1,27 @@
+% Chapter 7: pi makes a name nobody has seen.
+accumulate rules.
+
+% ANCHOR: show
+show :- pi x\ print "fresh:" x.
+% ANCHOR_END: show
+
+% ANCHOR: equal
+equal :-
+  yes_no (X = anna) "X = anna:",
+  yes_no (pi x\ x = anna)
+         "x = anna:".
+% ANCHOR_END: equal
+
+% ANCHOR: escape
+escape :-
+  yes_no (pi x\ Y = x) "Y = x:".
+% ANCHOR_END: escape
+
+% ANCHOR: two
+two :-
+  (pi x\ pi y\ print "two:" x y),
+  yes_no (pi x\ pi y\ x = y)
+         "x = y:".
+% ANCHOR_END: two
+
+main :- show, equal, escape, two.

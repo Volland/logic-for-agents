@@ -1,0 +1,29 @@
+% Chapter 7: claims about anyone at all.
+accumulate rules.
+
+% ANCHOR: hire
+hire :-
+  yes_no
+    (pi x\ reports_to x marco =>
+             chain x anna)
+    "anna's chain:".
+% ANCHOR_END: hire
+
+% ANCHOR: lena
+not_lena :-
+  yes_no
+    (pi x\ reports_to x marco =>
+             chain x lena)
+    "lena's chain:".
+% ANCHOR_END: lena
+
+% ANCHOR: newcomer
+newcomer :-
+  yes_no
+    (pi x\ attends 1 x =>
+           attends 2 x =>
+           not (bilocated x _ _))
+    "one place:".
+% ANCHOR_END: newcomer
+
+main :- hire, not_lena, newcomer.

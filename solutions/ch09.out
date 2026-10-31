@@ -1,0 +1,21 @@
+ex1
+accepted d 2000 12
+rejected
+ex2
+ok: it began after the kickoff
+ok: it was over before the review
+no: it began before it ended
+ex3
+ok: Sofia gave a talk at T
+no: T was on day 500
+ok: T was on day 1500
+ex4
+ok: after 9:00
+ok: after 11:00
+ok: after 10:00
+ok: before 17:00
+ok: before 13:00
+Constraints:
+ leq X0 (d 2000 13)  /* suspended on X0 */
+ leq (d 2000 11) X0  /* suspended on X0 */
+State:

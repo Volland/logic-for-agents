@@ -1,0 +1,17 @@
+chain marco anna  [boss]
+  reports_to marco anna  [memory]
+--
+colleague anna marco  [same_org]
+  works_at anna acme  [memory]
+  works_at marco acme  [memory]
+  differ anna marco  [check]
+--
+met anna marco  [met_at]
+  event 1 meeting [anna, marco] lisbon (d 2000 10) (d 2000 11)  [memory]
+  physical meeting  [memory]
+  std.mem [anna, marco] anna  [check]
+  std.mem [anna, marco] marco  [check]
+  differ anna marco  [check]
+--
+no proof of met anna taras
+by boss (chain marco anna) (leaf "memory" (reports_to marco anna))

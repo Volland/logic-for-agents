@@ -1,0 +1,7 @@
+std.mem [anna, marco] anna
+std.mem [anna, marco] marco
+
+std.append [anna] [marco, lena] [anna, marco, lena]
+
+std.length [anna, marco, lena] 3
+

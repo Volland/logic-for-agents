@@ -1,0 +1,75 @@
+% Solutions to the Chapter 2 exercises.
+% Self-contained: only world.elpi and time.elpi are loaded.
+accumulate world.
+accumulate time.
+
+% The `show` helper from code/ch02/show.elpi.
+pred show i:prop.
+show Q :- std.findall Q As, answers As, print "".
+pred answers i:list prop.
+answers [] :- print "no".
+answers [A|As] :- each [A|As].
+pred each i:list prop.
+each [].
+each [A|As] :- print A, each As.
+
+% ANCHOR: ex1
+% Exercise 2.1: three questions.
+pred ex1.
+ex1 :-
+  show (works_at Who lumen),
+  show (event 2 _ _ City _ _),
+  show (in_country porto Country).
+% ANCHOR_END: ex1
+
+% ANCHOR: ex2
+% Exercise 2.2: the country an event took place in.
+pred held_in o:int, o:country.
+held_in E K :-
+  event E _ _ C _ _, in_country C K.
+
+pred ex2.
+ex2 :-
+  show (held_in E ukraine),
+  show (held_in E1 germany).   % the phantom is not in memory
+% ANCHOR_END: ex2
+
+% ANCHOR: ex3
+% Exercise 2.3: peers report to the same person.
+works_at sofia acme.
+reports_to sofia marco.
+reports_to lena anna.
+
+pred peers o:person, o:person.
+peers P Q :-
+  reports_to P M, reports_to Q M.
+
+pred ex3.
+ex3 :-
+  show (peers sofia Q),
+  show (peers marco Q1).
+% Everyone is their own peer: nothing says P and Q differ.
+% Saying so needs `not (P = Q)`, from Chapter 3.
+% ANCHOR_END: ex3
+
+% ANCHOR: ex4
+% Exercise 2.4: who could have bumped into whom.
+event 6 talk [lena, sofia] lisbon (d 2000 10) (d 2000 12).
+
+pred present o:person, o:city, o:time, o:time.
+present P C From To :-
+  event _ K Who C From To,
+  physical K,
+  std.mem Who P.
+
+pred could_have_met o:person, o:person, o:city.
+could_have_met P Q C :-
+  present P C F1 T1,
+  present Q C F2 T2,
+  overlaps F1 T1 F2 T2.
+
+pred ex4.
+ex4 :- show (could_have_met anna Q lisbon).
+% ANCHOR_END: ex4
+
+main :- ex1, ex2, ex3, ex4.

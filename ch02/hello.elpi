@@ -1,0 +1,8 @@
+% Chapter 2: is lean-elpi installed, and can it see the world?
+% ANCHOR: hello
+accumulate world.
+
+main :-
+  works_at anna acme,
+  print "anna works at acme".
+% ANCHOR_END: hello

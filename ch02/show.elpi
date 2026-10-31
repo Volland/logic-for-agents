@@ -1,0 +1,18 @@
+% A helper for Chapters 2 and 3: print every answer.
+%
+% `show Q` collects every way to prove Q, prints each filled-in
+% question on its own line, then a blank line. If there is no
+% answer it prints `no`. Chapter 3 explains every line of it.
+
+% ANCHOR: show
+pred show i:prop.
+show Q :- std.findall Q As, answers As, print "".
+
+pred answers i:list prop.
+answers [] :- print "no".
+answers [A|As] :- each [A|As].
+
+pred each i:list prop.
+each [].
+each [A|As] :- print A, each As.
+% ANCHOR_END: show

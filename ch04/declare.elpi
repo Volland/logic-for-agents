@@ -1,0 +1,21 @@
+% Chapter 4: kinds, constructors with arrows, predicates.
+accumulate world.
+
+% ANCHOR: role
+kind role type.
+type engineer role.
+type lead org -> role.
+% ANCHOR_END: role
+
+% ANCHOR: has_role
+pred has_role o:person, o:role.
+has_role anna  (lead acme).
+has_role lena  (lead lumen).
+has_role marco engineer.
+% ANCHOR_END: has_role
+
+% ANCHOR: main
+main :-
+  has_role anna R, print "anna:" R,
+  has_role P (lead lumen), print "lead of lumen:" P.
+% ANCHOR_END: main

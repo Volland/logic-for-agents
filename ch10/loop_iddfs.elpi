@@ -1,0 +1,15 @@
+#lf
+% loop.elpi with one more line: iterative deepening.
+person : type.
+anna  : person.
+marco : person.
+sofia : person.
+reports_to : person -> person -> type.
+rt_marco : reports_to marco anna.
+rt_sofia : reports_to sofia marco.
+chain : person -> person -> type.
+step : chain X Z <- chain Y Z <- reports_to X Y.
+one  : chain X Y <- reports_to X Y.
+% ANCHOR: strategy
+#strategy iddfs.
+% ANCHOR_END: strategy

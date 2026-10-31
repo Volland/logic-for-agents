@@ -1,0 +1,10 @@
+% expect: fail
+% Chapter 4: a list must have one element type.
+accumulate world.
+pred member i:list A, o:A.
+member [X|_] X.
+member [_|T] X :- member T X.
+
+% ANCHOR: mixed
+main :- member [anna, lisbon] X, print X.
+% ANCHOR_END: mixed

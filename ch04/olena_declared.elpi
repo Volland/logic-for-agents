@@ -1,0 +1,10 @@
+% Chapter 4: declare Olena first, then the fact loads.
+accumulate world.
+
+% ANCHOR: declared
+type olena person.
+works_at olena acme.
+% ANCHOR_END: declared
+
+main :- works_at P acme, print P, fail.
+main.

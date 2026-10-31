@@ -1,0 +1,56 @@
+Sofia works at Lumen.
+  | works_at(sofia, lumen).
+  rejected by the type check:
+  <assert>:1:9: sofia has type person but is used with type prop
+  <assert>:1:16: lumen has type org but is used with type prop
+  <assert>:1:14: application of , has type prop but is used with
+    type person
+  <assert>:1:0: application of works_at has type org -> prop but
+    is used with type prop
+
+Two people know each other if they met, unless they are the same
+  person.
+  | knows X Y :- met X Y, X \= Y.
+  rejected by the parse check:
+  <assert>:1:25: term expected, found '='
+
+Sofia works at Acme.
+  | works_at acme sofia.
+  rejected by the type check:
+  <assert>:1:9: acme has type org but is used with type person
+  <assert>:1:14: sofia has type person but is used with type org
+
+Olena works at Lumen.
+  | works_at olena lumen.
+  rejected by the type check:
+  <assert>:1:9: undeclared constant 'olena'
+
+Everyone at Acme knows each other.
+  | knows X Y :- works_at X acme.
+  rejected by the mode check:
+  `knows X Y`: output 2 is Y, which the body never binds: a hole
+    in every answer
+
+Everyone who works at Lumen reports to Lena.
+  | reports_to X lena :- works_at X lumen.
+  rejected by the allowed check:
+  a rule may not define reports_to; rules may only define: knows
+
+People who met know each other, and knowing goes both ways.
+  | knows X Y :- met X Y.
+  | knows X Y :- knows Y X.
+  rejected by the sandbox check:
+  out of fuel: the budget of 20000 steps ran out
+  while running `knows X1 X2`
+
+Anna and Lena met in Berlin on day 2000, from 10 to 12.
+  | event 3 meeting [anna, lena] berlin (d 2000 10) (d 2000 12).
+  rejected by the consistency check:
+  bilocation: anna: event 1 in lisbon overlaps event 3 in berlin
+
+When did the kickoff start, in minutes since day 0?
+  | minutes T M, event 1 _ _ _ T _
+  rejected by the mode check:
+  `minutes T M`: input 1 (i:time) must be known, but T is not
+    bound yet
+

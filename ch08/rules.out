@@ -1,0 +1,4 @@
+no
+3 rules for colleague
+colleague X0 X1
+  :- reports_to X0 X1

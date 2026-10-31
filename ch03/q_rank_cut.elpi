@@ -1,0 +1,9 @@
+% Chapter 3: the cut commits.
+accumulate cut.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (rank_cut anna R),
+  show (rank_cut marco R1).
+% ANCHOR_END: q

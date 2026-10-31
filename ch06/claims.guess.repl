@@ -1,0 +1,3 @@
+T lena = and (att 1 lena)
+             (got 1 lena).
+

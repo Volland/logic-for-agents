@@ -1,0 +1,8 @@
+% Chapter 2: whom has Taras met?
+accumulate rules.
+accumulate show.
+
+% ANCHOR: q
+main :-
+  show (met taras Q).
+% ANCHOR_END: q

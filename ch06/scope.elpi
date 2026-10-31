@@ -1,0 +1,10 @@
+% expect: fail
+% Chapter 6: a bound variable does not exist outside its λ.
+accumulate lang.
+
+% ANCHOR: main
+main :-
+  C = and (all (p\ att 1 p))
+          (got 1 p),
+  print C.
+% ANCHOR_END: main

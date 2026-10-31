@@ -1,0 +1,24 @@
+% Chapter 5: one closure for every relation.
+accumulate more_world.
+
+% ANCHOR: closure
+pred closure i:(A -> A -> prop), i:A, o:A.
+closure R X Y :- R X Y.
+closure R X Z :- R X Y, closure R Y Z.
+% ANCHOR_END: closure
+
+% ANCHOR: answers
+% All answers of a one-hole question, as a list.
+pred answers i:(A -> prop), o:list A.
+answers Q L :- std.findall (Q X) Gs, std.map Gs (pick Q) L.
+
+pred pick i:(A -> prop), i:prop, o:A.
+pick Q G X :- G = Q X.
+% ANCHOR_END: answers
+
+% ANCHOR: main
+main :-
+  answers (closure reports_to taras) B, print B,
+  answers (closure owned_by kyivTech) O, print O,
+  answers (closure route porto) C, print C.
+% ANCHOR_END: main

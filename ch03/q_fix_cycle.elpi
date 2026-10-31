@@ -1,0 +1,8 @@
+% Chapter 3: the fixpoint with a cycle.
+accumulate datalog.
+
+% ANCHOR: q
+main :-
+  edb DB,
+  fixpoint 1 [rep anna marco | DB] _.
+% ANCHOR_END: q

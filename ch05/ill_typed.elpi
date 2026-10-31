@@ -1,0 +1,10 @@
+% expect: fail
+% Chapter 5: closure needs a relation from A to the same A.
+accumulate more_world.
+pred closure i:(A -> A -> prop), i:A, o:A.
+closure R X Y :- R X Y.
+closure R X Z :- R X Y, closure R Y Z.
+
+% ANCHOR: bad
+main :- closure works_at anna X, print X.
+% ANCHOR_END: bad

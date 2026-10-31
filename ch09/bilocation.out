@@ -1,0 +1,11 @@
+ok: Anna met Lena in Berlin
+no: it began at 10:00
+S: X0
+Constraints:
+ at lena berlin X0 (d 2000 12)  /* suspended on X0 */
+ leq (d 2000 11) X0  /* suspended on X0 */
+ at anna berlin X0 (d 2000 12)  /* suspended on X0 */
+ leq X0 (d 2000 12)  /* suspended on X0 */
+ at marco lisbon (d 2000 10) (d 2000 11)  /* suspended on  */
+ at anna lisbon (d 2000 10) (d 2000 11)  /* suspended on  */
+State:

@@ -1,0 +1,12 @@
+ok: after the review
+ok: it lasted a while
+ok: over by noon
+no: it began at 9:00
+no: it ended at 10:00
+ok: it began at 11:00
+S: d 2000 11
+E: X0
+Constraints:
+ leq (d 2000 11) X0  /* suspended on X0 */
+ leq X0 (d 2000 12)  /* suspended on X0 */
+State:

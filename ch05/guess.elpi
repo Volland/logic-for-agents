@@ -1,0 +1,10 @@
+% expect: fail
+% Chapter 5: the engine will not invent a relation.
+accumulate more_world.
+
+% ANCHOR: guess
+pred link o:(person -> person -> prop), i:person, i:person.
+link R X Y :- R X Y.
+
+main :- link R marco anna, print R.
+% ANCHOR_END: guess

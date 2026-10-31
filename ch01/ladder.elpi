@@ -1,0 +1,35 @@
+% Chapter 1: three rungs of the logic ladder.
+accumulate world.
+
+% ANCHOR: propositional
+% Rung 1: no parts inside.
+type kickoff_held prop.
+type anna_travelled prop.
+kickoff_held.
+anna_travelled :- kickoff_held.
+% ANCHOR_END: propositional
+
+% ANCHOR: first_order
+% Rung 2: things and relations.
+pred colleague o:person,
+               o:person.
+colleague P Q :-
+  works_at P O, works_at Q O,
+  not (P = Q).
+% ANCHOR_END: first_order
+
+% ANCHOR: higher_order
+% Rung 3: R stands for a relation.
+pred chain
+  i:(person -> person -> prop),
+  i:person, o:person.
+chain R X Y :- R X Y.
+chain R X Z :- R X Y, chain R Y Z.
+% ANCHOR_END: higher_order
+
+% ANCHOR: main
+main :-
+  anna_travelled, print "rung 1: anna travelled",
+  colleague anna Q, print "rung 2: anna and" Q,
+  chain reports_to marco B, print "rung 3: marco up to" B.
+% ANCHOR_END: main

@@ -1,0 +1,7 @@
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+ch10/lean/.lake/
+.omc/
+.DS_Store

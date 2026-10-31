@@ -1,0 +1,8 @@
+?- Success:
+  P = anna
+More? (y/N) Success:
+  P = marco
+More? (y/N) No more solutions
+?- Success:
+  K = portugal
+More? (y/N) ?- 

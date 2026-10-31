@@ -1,0 +1,12 @@
+% Chapter 5: std.map needs an answer for every element.
+accumulate more_world.
+
+% ANCHOR: main
+pred yes_no i:prop, i:string.
+yes_no G Label :- (G, print Label "yes" ; print Label "no").
+
+main :-
+  yes_no (std.map [anna, marco] reports_to _) "map:",
+  std.map-filter [anna, marco, taras] reports_to Bs,
+  print "map-filter:" Bs.
+% ANCHOR_END: main

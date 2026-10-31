@@ -1,0 +1,14 @@
+% erased from the LF signature chain
+kind person type.
+type anna person.
+type marco person.
+type lena person.
+type taras person.
+type sofia person.
+type reports_to person -> person -> prop.
+type chain person -> person -> prop.
+reports_to marco anna.
+reports_to taras lena.
+reports_to sofia marco.
+chain X Y :- (reports_to X Y).
+chain X Z :- (reports_to X Y), (chain Y Z).

@@ -1,0 +1,4 @@
+kickoff: pr (d 2000 10) (d 2000 11)
+attended by: [anna, marco]
+marco's boss: some anna
+anna's boss: none

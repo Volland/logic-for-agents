@@ -1,0 +1,18 @@
+{
+  "note": "Authored fixture, not a live recording: hand-written responses in the shape claude-sonnet-5-5 returns for agent/host.py's same_person prompt. Two of them are wrong on purpose.",
+  "model": "claude-sonnet-5-5",
+  "steps": [
+    {"step": "a nickname", "user": "Anya",
+     "response": "{\"person\": \"anna\"}"},
+    {"step": "a spelling", "user": "Marko",
+     "response": "{\"person\": \"marco\"}"},
+    {"step": "a right match; the rule still says no", "user": "Lenka",
+     "response": "{\"person\": \"lena\"}"},
+    {"step": "nobody", "user": "Bob",
+     "response": "{\"person\": null}"},
+    {"step": "wrong: a city, not a person", "user": "Lisa",
+     "response": "{\"person\": \"lisbon\"}"},
+    {"step": "wrong: a person the world does not have", "user": "Olena",
+     "response": "```json\n{\"person\": \"olena\"}\n```"}
+  ]
+}
