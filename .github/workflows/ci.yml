@@ -13,9 +13,9 @@ jobs:
           git clone --depth 1 --branch v0.4.0 https://github.com/Volland/lean-elpi ../lean-elpi
           cd ../lean-elpi && lake build && scripts/build-ffi.sh
       - name: Examples and solutions
-        run: LEAN_ELPI=../lean-elpi/.lake/build/bin/lean-elpi python3 tests/run_elpi.py
+        run: LEAN_ELPI=$PWD/../lean-elpi/.lake/build/bin/lean-elpi python3 tests/run_elpi.py
       - name: LF proof terms (Chapter 10)
-        run: LEAN_ELPI=../lean-elpi/.lake/build/bin/lean-elpi ch10/run_lf.sh
+        run: LEAN_ELPI=$PWD/../lean-elpi/.lake/build/bin/lean-elpi ch10/run_lf.sh
       - name: Kernel-checked certificates (Chapter 10)
         run: export PATH="$HOME/.elan/bin:$PATH" && cd ch10/lean && lake build
       - uses: actions/setup-python@v5
