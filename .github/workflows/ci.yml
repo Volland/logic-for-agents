@@ -10,7 +10,7 @@ jobs:
       - name: Build lean-elpi
         run: |
           export PATH="$HOME/.elan/bin:$PATH"
-          git clone --depth 1 --branch v0.4.0 https://github.com/Volland/lean-elpi ../lean-elpi
+          git clone --depth 1 --branch v0.4.1 https://github.com/Volland/lean-elpi ../lean-elpi
           cd ../lean-elpi && lake build && scripts/build-ffi.sh
       - name: Examples and solutions
         run: LEAN_ELPI=$PWD/../lean-elpi/.lake/build/bin/lean-elpi python3 tests/run_elpi.py
