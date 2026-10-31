@@ -21,11 +21,8 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - name: Agent
-        # leanelpi 0.4 (host predicates) is not on PyPI yet:
-        # install it from the lean-elpi checkout first.
+        # leanelpi>=0.4.1 from PyPI, exactly as a reader installs it.
         run: |
-          pip install -e ../lean-elpi/bindings/python
           pip install -e '.[dev]'
-          export LEANELPI_LIB=$PWD/../lean-elpi/dist/libleanelpi.dylib
           pytest -q
           python -m agent
