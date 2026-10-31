@@ -32,7 +32,7 @@ CASES += [
      ev(4, "meeting", ["anna", "lena"], "berlin",
         2000, 11, 12)),
     ("a call nobody had", False,
-     ev(11, "call", ["lena", "taras"], "kyiv",
+     ev(14, "call", ["sofia", "taras"], "lviv",
         2001, 9, 10)),
     ("the sofia trap", False,
      ev(30, "meeting", ["sofia", "taras"], "lviv",

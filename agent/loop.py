@@ -141,7 +141,13 @@ class Agent:
     # ANCHOR_END: ask
 
     def do_why(self, action: dict) -> str:
-        proof = self.memory.why(action["goal"])
+        goal = action["goal"]
+        try:
+            guard_query(self.memory, goal)
+        except GuardError as e:
+            return (f"I can't explain {goal}: the "
+                    f"{e.stage} check says {e.message}")
+        proof = self.memory.why(goal)
         if proof.startswith("no proof"):
             return f"I don't think so: {proof}."
         return f"Because:\n{proof}"
@@ -155,6 +161,11 @@ class Agent:
         except ParseError as e:
             return f"I can't read that: {e}."
         query = action["query"]
+        try:  # the query guards of `ask`, on memory as it is
+            guard_query(self.memory, query)
+        except GuardError as e:
+            return (f"I can't run {query}: the "
+                    f"{e.stage} check says {e.message}")
         out = [f"That would break {v.rule}: {v.detail}."
                for v in self.memory.violations_if(assume)]
         out.append("If that were true:")

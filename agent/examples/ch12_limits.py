@@ -14,7 +14,7 @@ print(guard(m, text).history)
 # ANCHOR_END: invention
 
 # ANCHOR: wrong_rule
-# "People know each other if they report to each
+# "People know each other if one reports to the
 # other." Half of it: one direction only.
 k = guard(m, "knows X Y :- reports_to X Y.")
 print(k.ask("knows anna Y"), k.ask("knows marco Y"))

@@ -56,7 +56,7 @@ def main(argv: list[str] | None = None) -> int:
     if isinstance(llm, RecordingLLM):
         llm.save(args.record, turns=turns)
     if isinstance(llm, ReplayLLM) and not llm.finished():
-        print("replay: unused recorded steps",
+        print("replay: unused steps in the replay file",
               file=sys.stderr)
         return 1
     return 0

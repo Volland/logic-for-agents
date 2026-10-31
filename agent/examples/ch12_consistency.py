@@ -39,6 +39,6 @@ run(WROTE["a contradictory fact"])
 # ANCHOR_END: run
 
 # ANCHOR: ours
-# Not from the recording: a second manager for Marco.
+# Not from the replay file: a second manager for Marco.
 run("reports_to marco lena.")
 # ANCHOR_END: ours

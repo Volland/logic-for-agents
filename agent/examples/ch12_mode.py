@@ -40,7 +40,7 @@ run(WROTE["a query in the wrong order"], query=True)
 # ANCHOR_END: run
 
 # ANCHOR: ours
-# Not from the recording: a fact with a hole, and
+# Not from the replay file: a fact with a hole, and
 # the query in the right order.
 run("works_at X acme.")
 run("event 1 _ _ _ T _, minutes T M", query=True)

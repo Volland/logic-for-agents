@@ -39,7 +39,7 @@ run(WROTE["a forbidden head"])
 # ANCHOR_END: run
 
 # ANCHOR: ours
-# Not from the recording: Chapter 4's typo, a fact the
+# Not from the replay file: Chapter 4's typo, a fact the
 # memory does not own, and a call to the machinery.
 run("work_at lena acme.")
 run("in_country porto germany.")

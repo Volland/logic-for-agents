@@ -65,13 +65,13 @@ class AnthropicLLM:
 
 
 class ReplayError(AssertionError):
-    """The agent asked something the recording did not."""
+    """The agent asked something the replay file did not."""
 
 
 # @tg: implements:: [[decisions#Strict replay of recorded LLM calls]]
 # ANCHOR: replay
 class ReplayLLM:
-    """Plays back a recording, step by step. Each step
+    """Plays back a replay file, step by step. Each step
     holds the last user message the agent sent and the
     reply; a different message fails loudly."""
 
@@ -87,7 +87,7 @@ class ReplayLLM:
             raise ReplayError(
                 f"{self.path.name}: the agent made call "
                 f"{self.next + 1}, but only "
-                f"{len(self.steps)} were recorded")
+                f"{len(self.steps)} are in the replay file")
         step = self.steps[self.next]
         asked = messages[-1]["content"]
         if asked != step["user"]:
@@ -95,7 +95,7 @@ class ReplayLLM:
                 f"{self.path.name}, step {self.next + 1} "
                 f"({step.get('step', '')}):\n"
                 f"the agent asked:\n{asked}\n"
-                f"the recording has:\n{step['user']}")
+                f"the replay file has:\n{step['user']}")
         self.next += 1
         return step["response"]
 

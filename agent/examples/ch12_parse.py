@@ -39,7 +39,7 @@ run(WROTE["syntax error"])
 # ANCHOR_END: run
 
 # ANCHOR: ours
-# Not from the recording: two more answers to try.
+# Not from the replay file: two more answers to try.
 run("pred likes o:person, o:person.")
 run("Knows anna marco.")
 # ANCHOR_END: ours
