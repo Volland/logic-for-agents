@@ -1,0 +1,8 @@
+system prompt: 1281 characters
+call 1: sent  1328, got   20  type
+call 2: sent  1541, got   20  passed
+call 3: sent  1389, got   85  sandbox
+call 4: sent  1621, got  137  passed
+call 5: sent  1331, got   15  passed
+requests: 3, calls: 5, passed on the first try: 1
+failed tries by guard: {'type': 1, 'sandbox': 1}

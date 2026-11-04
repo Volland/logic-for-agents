@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from agent.llm import (AnthropicLLM, LLMError,
+from agent.llm import (AnthropicLLM, LLMError, Metered,
                        RecordingLLM, ReplayError,
                        ReplayLLM)
 from conftest import REPLAY, ScriptLLM, write_replay
@@ -96,3 +96,13 @@ def test_anthropic_adapter_reports_a_refusal():
     with pytest.raises(LLMError):
         AnthropicLLM(client=client).complete(
             "sys", ask("a"))
+
+
+def test_metered_counts_each_call(tmp_path):
+    path = write_replay(tmp_path / "r.json", [
+        {"user": "ab", "response": "123"}])
+    llm = Metered(ReplayLLM(path))
+    assert llm.complete("sys", ask("ab")) == "123"
+    [call] = llm.calls
+    assert (call.sent, call.received) == (5, 3)
+    assert call.tokens is None  # a replay has no usage

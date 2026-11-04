@@ -15,10 +15,12 @@ For each `FILE.repl`, pipe it into `lean-elpi BASE.elpi -I lib` (the REPL)
 and compare with `FILE.repl.out`. BASE is the part of FILE before the
 first dot, so `family.more.repl` drives `family.elpi`.
 
-  python3 tests/run_elpi.py [--update] [PATH...]
+  python3 tests/run_elpi.py [--update] [--lfa] [PATH...]
 
 `--update` rewrites the golden files from the current output; review the
-diff before committing. The binary is $LEAN_ELPI or `lean-elpi` on PATH.
+diff before committing. The binary is $LEAN_ELPI or `lean-elpi` on PATH;
+without either, or with `--lfa`, the files run on `lfa.py`, which needs
+only the `leanelpi` wheel (pip install "leanelpi>=0.4.1").
 """
 from __future__ import annotations
 
@@ -36,16 +38,19 @@ FOLDERS = sorted(p for p in ROOT.iterdir()
                                     or p.name == "solutions"))
 
 
-def binary() -> str:
+USE_LFA = False
+
+
+def binary() -> list[str]:
     exe = os.environ.get("LEAN_ELPI") or shutil.which("lean-elpi")
-    if not exe:
-        sys.exit("lean-elpi not found: set LEAN_ELPI or put it on PATH")
-    return exe
+    if exe and not USE_LFA:
+        return [exe]
+    return [sys.executable, str(ROOT / "lfa.py")]
 
 
 def run(args: list[str], cwd: Path, stdin: str | None = None) \
         -> tuple[int, str]:
-    p = subprocess.run([binary(), *args, "-I", str(LIB)], cwd=cwd,
+    p = subprocess.run([*binary(), *args, "-I", str(LIB)], cwd=cwd,
                        input=stdin, capture_output=True, text=True,
                        timeout=120)
     return p.returncode, p.stdout + p.stderr
@@ -74,6 +79,9 @@ def check(cases: list[tuple[str, Path, int, str]], update: bool) -> int:
 def collect(paths: list[Path]) -> list[tuple[str, Path, int, str]]:
     cases = []
     for folder in paths:
+        if USE_LFA and folder.name == "ch10":
+            print("skip ch10: LF needs the lean-elpi program")
+            continue
         files = [folder] if folder.is_file() else sorted(folder.iterdir())
         for f in files:
             if f.suffix == ".elpi" and f.with_suffix(".out").exists():
@@ -95,6 +103,10 @@ def collect(paths: list[Path]) -> list[tuple[str, Path, int, str]]:
 
 
 def main(argv: list[str]) -> int:
+    global USE_LFA
+    USE_LFA = "--lfa" in argv or not (os.environ.get("LEAN_ELPI")
+                                      or shutil.which("lean-elpi"))
+    print("engine: " + " ".join(binary()))
     update = "--update" in argv
     paths = [Path(a).resolve() for a in argv if not a.startswith("--")] \
         or FOLDERS

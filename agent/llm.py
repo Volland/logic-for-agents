@@ -8,6 +8,8 @@ a live model and writes such a file.
 from __future__ import annotations
 
 import json
+import time
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
 
@@ -44,6 +46,7 @@ class AnthropicLLM:
         self.client = client
         self.model = model
         self.max_tokens = max_tokens
+        self.usage = None  # of the last call, for Metered
 
     def complete(self, system: str,
                  messages: list[Message]) -> str:
@@ -57,6 +60,7 @@ class AnthropicLLM:
             betas=["server-side-fallback-2026-07-01"],
             fallbacks="default",
         )
+        self.usage = getattr(r, "usage", None)
         if r.stop_reason == "refusal":
             raise LLMError("the model declined to answer")
         return "".join(b.text for b in r.content
@@ -132,3 +136,35 @@ class RecordingLLM:
             json.dumps(data, indent=2, ensure_ascii=False)
             + "\n", encoding="utf-8")
 # ANCHOR_END: recording
+
+
+# ANCHOR: metered
+@dataclass
+class Call:
+    sent: int        # characters: system prompt + messages
+    received: int    # characters in the reply
+    seconds: float   # wall time of the call
+    tokens: tuple[int, int] | None = None  # in, out (live)
+
+
+# @tg: implements:: [[decisions#Meter the guard loop]]
+@dataclass
+class Metered:
+    """Wraps an LLM and keeps one `Call` per request: what
+    a guard loop costs, in calls, characters and time."""
+    inner: LLM
+    calls: list[Call] = field(default_factory=list)
+
+    def complete(self, system: str,
+                 messages: list[Message]) -> str:
+        start = time.perf_counter()
+        reply = self.inner.complete(system, messages)
+        u = getattr(self.inner, "usage", None)
+        self.calls.append(Call(
+            len(system) + sum(len(m["content"])
+                              for m in messages),
+            len(reply), time.perf_counter() - start,
+            (u.input_tokens, u.output_tokens) if u
+            else None))
+        return reply
+# ANCHOR_END: metered

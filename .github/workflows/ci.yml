@@ -26,3 +26,5 @@ jobs:
           pip install -e '.[dev]'
           pytest -q
           python -m agent
+      - name: Chapters 1-9 on the wheel alone (lfa)
+        run: python tests/run_elpi.py --lfa

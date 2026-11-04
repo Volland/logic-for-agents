@@ -1,0 +1,19 @@
+% How to Read: a Prolog habit that λProlog reads differently.
+% Anna works at Acme, so both answers should be "yes".
+accumulate world.
+
+% ANCHOR: ite
+% ISO Prolog's if-then-else
+pred iso_answer.
+iso_answer :- (works_at anna acme -> print "yes"
+                                  ; print "no").
+% ANCHOR_END: ite
+
+% ANCHOR: cut
+% λProlog: two clauses and a cut
+pred answer.
+answer :- works_at anna acme, !, print "yes".
+answer :- print "no".
+% ANCHOR_END: cut
+
+main :- iso_answer, answer.

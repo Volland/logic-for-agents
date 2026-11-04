@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "logic-for-agents"
 version = "0.1.0"
-description = "The logic layer of a little neurosymbolic agent: companion code for Part III of Logic for Agents"
+description = "Companion code for Logic for Agents: the lfa runner for Chapters 1-9 and the logic layer of Part III"
 license = "Apache-2.0"
 requires-python = ">=3.10"
 dependencies = ["leanelpi>=0.4.1", "anthropic>=2.3"]
@@ -13,8 +13,12 @@ dependencies = ["leanelpi>=0.4.1", "anthropic>=2.3"]
 [project.optional-dependencies]
 dev = ["pytest"]
 
+[project.scripts]
+lfa = "lfa:main"
+
 [tool.setuptools]
 packages = ["agent"]
+py-modules = ["lfa"]
 
 [tool.setuptools.package-data]
 agent = ["rules/*.elpi"]
